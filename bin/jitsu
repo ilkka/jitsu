@@ -13,3 +13,24 @@ if not File.executable? Jitsu.ninja
   exit 1
 end
 
+opts = Trollop::options do
+  version <<-EOS
+jitsu #{File.read File.join(File.dirname(__FILE__), '..', 'VERSION')}
+Copyright (C) 2011 Ilkka Laukkanen <ilkka.s.laukkanen@gmail.com>
+Licensed under the MIT License
+EOS
+  banner <<-EOS
+jitsu, the meta build system for ninja.
+
+Usage: jitsu [ OPTIONS ]
+
+where OPTIONS are one or more of the following:
+EOS
+  opt :verbose, "Be more verbose", :short => '-V'
+  opt :debug, "Output messages useful for debugging", :short => '-D'
+end
+
+$Log.level = Logger::INFO if opts[:verbose]
+$Log.level = Logger::DEBUG if opts[:debug]
+
+
