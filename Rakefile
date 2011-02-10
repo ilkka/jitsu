@@ -17,12 +17,12 @@ Jeweler::Tasks.new do |gem|
   gem.license = "MIT"
   gem.summary = %Q{Meta build system for Ninja}
   gem.description = <<-EOS
-    Jitsu is a frontend or meta build system for Ninja
-    (http://github.com/martine/ninja), a lightning-fast but
-    in itself (and by design) feature-poor build system.
-    Jitsu reads project descriptions and generates Ninja
-    buildfiles.
-    EOS
+Jitsu is a frontend or meta build system for Ninja
+(http://github.com/martine/ninja), a lightning-fast but
+in itself (and by design) feature-poor build system.
+Jitsu reads project descriptions and generates Ninja
+buildfiles.
+EOS
   gem.email = "ilkka.s.laukkanen@gmail.com"
   gem.authors = ["Ilkka Laukkanen"]
 end
