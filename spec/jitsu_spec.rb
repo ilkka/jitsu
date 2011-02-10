@@ -20,7 +20,16 @@ describe "Jitsu" do
     end
   end
 
-  it "finds a build.jitsu file in the current directory"
+  it "finds a build.jitsu file in the current directory" do
+    Dir.mktmpdir do |dir|
+      Dir.chdir dir do |dir|
+        File.open('build.jitsu', 'w') do |f|
+          f.write 'fuubar'
+          Jitsu.jitsufile.should == 'build.jitsu'
+        end
+      end
+    end
+  end
 
   it "finds a build.jitsu file in the parent directory"
 end
