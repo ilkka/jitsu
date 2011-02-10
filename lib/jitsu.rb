@@ -12,5 +12,6 @@ module Jitsu
   #
   # @return [String] path to jitsu file or nil if not found.
   def self.jitsufile
+    Dir['build.jitsu'].first
   end
 end
