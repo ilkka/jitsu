@@ -33,4 +33,8 @@ end
 $Log.level = Logger::INFO if opts[:verbose]
 $Log.level = Logger::DEBUG if opts[:debug]
 
+if not Jitsu.jitsu_file
+  warn "Could not find jitsu file"
+  exit 2
+end
 
