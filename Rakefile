@@ -25,13 +25,6 @@ Jeweler::Tasks.new do |gem|
     EOS
   gem.email = "ilkka.s.laukkanen@gmail.com"
   gem.authors = ["Ilkka Laukkanen"]
-
-  gem.add_development_dependency 'rspec', '~> 2.3.0'
-  gem.add_development_dependency 'yard', '~> 0.6.0'
-  gem.add_development_dependency 'cucumber', '>= 0'
-  gem.add_development_dependency 'bundler', '~> 1.0.0'
-  gem.add_development_dependency 'jeweler', '~> 1.5.2'
-  gem.add_development_dependency 'rcov', '>= 0'
 end
 Jeweler::RubygemsDotOrgTasks.new
 
