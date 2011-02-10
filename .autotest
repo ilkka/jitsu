@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+Autotest.add_hook(:initialize) {|at|
+  at.add_exception %r{^\.git}
+}
