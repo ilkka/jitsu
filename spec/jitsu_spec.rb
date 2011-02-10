@@ -12,7 +12,13 @@ describe "Jitsu" do
     ENV['PATH'] = oldpath
   end
 
-  it "finds no jitsu file if a jitsu file is not present"
+  it "finds no jitsu file if a jitsu file is not present" do
+    Dir.mktmpdir do |dir|
+      Dir.chdir dir do |dir|
+        Jitsu.jitsufile.should == nil
+      end
+    end
+  end
 
   it "finds a build.jitsu file in the current directory"
 
