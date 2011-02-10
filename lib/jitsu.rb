@@ -1,5 +1,5 @@
 module Jitsu
-  def ninja
+  def self.ninja
     "ninja"
   end
 end
