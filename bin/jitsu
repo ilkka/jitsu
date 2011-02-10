@@ -1,4 +1,15 @@
 #!/usr/bin/env ruby
+require 'trollop'
+require 'logger'
+
 require 'jitsu'
 
-echo "This is jitsu"
+$Log = Logger.new STDOUT
+$Log.level = Logger::WARN
+$Log.progname = "jitsu"
+
+if not File.executable? Jitsu.ninja
+  warn "Could not find ninja. No surprise there."
+  exit 1
+end
+
