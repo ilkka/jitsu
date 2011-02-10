@@ -8,7 +8,7 @@ $Log = Logger.new STDOUT
 $Log.level = Logger::WARN
 $Log.progname = "jitsu"
 
-if not File.executable? Jitsu.ninja
+if not Jitsu.ninja
   warn "Could not find ninja. No surprise there."
   exit 1
 end
