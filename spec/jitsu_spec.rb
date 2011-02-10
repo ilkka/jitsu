@@ -11,4 +11,10 @@ describe "Jitsu" do
     Jitsu.ninja.should == nil
     ENV['PATH'] = oldpath
   end
+
+  it "finds no jitsu file if a jitsu file is not present"
+
+  it "finds a build.jitsu file in the current directory"
+
+  it "finds a build.jitsu file in the parent directory"
 end
