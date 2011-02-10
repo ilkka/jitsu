@@ -6,4 +6,11 @@ module Jitsu
     candidates = ENV['PATH'].split(/:/).map { |d| File.join d, 'ninja' }
     candidates.select { |n| File.executable? n }.first
   end
+
+  # Get path to jitsu file. Search starting from current working
+  # directory upwards.
+  #
+  # @return [String] path to jitsu file or nil if not found.
+  def self.jitsufile
+  end
 end
