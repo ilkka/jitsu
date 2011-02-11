@@ -44,4 +44,29 @@ describe "Jitsu" do
       end
     end
   end
+
+  it "reads YAML from jitsu files" do
+    Dir.mktmpdir do |dir|
+      Dir.chdir dir do |dir|
+        File.open 'build.jitsu', 'w' do |f|
+          f.write <<-EOS
+---
+targets:
+  test1:
+    type: executable
+    sources: test1.cpp
+    cppflags: -g -Wall
+    dependencies:
+      - test2
+  test2:
+    type: library
+    sources: test2.cpp
+    cppflags: -ansi -pedantic
+EOS
+        end
+        data = Jitsu.read Jitsu.jitsufile
+        data[:targets].keys.should == ['test1', 'test2']
+      end
+    end
+  end
 end
