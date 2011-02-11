@@ -39,7 +39,7 @@ describe "Jitsu" do
         end
         Dir.mkdir 'subdir'
         Dir.chdir 'subdir' do |dir|
-          Jitsu.jitsufile.should == '../build.jitsuaaa'
+          Jitsu.jitsufile.should == '../build.jitsu'
         end
       end
     end
