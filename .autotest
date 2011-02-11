@@ -2,4 +2,5 @@
 Autotest.add_hook(:initialize) {|at|
   at.add_exception(/\.git\/.*/)
   at.add_exception(/\..*\.sw[op]/)
+  at.add_exception(/doc\/.*/)
 }
