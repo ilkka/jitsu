@@ -23,4 +23,11 @@ module Jitsu
       dir = File.join dir, '..'
     end
   end
+
+  # Read a jitsu file and output the build specification.
+  #
+  # @param jitsufile [String] path to jitsu file from e.g. Jitsu::jitsufile.
+  # @return [Hash] a hash of the build specification.
+  def self.read(jitsufile)
+  end
 end
