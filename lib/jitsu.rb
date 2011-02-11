@@ -1,4 +1,6 @@
 module Jitsu
+  JITSU_FILE_NAME = 'build.jitsu'
+
   # Get path to ninja.
   #
   # @return [String] path to `ninja` or nil if ninja was not found.
