@@ -33,4 +33,11 @@ module Jitsu
   def self.read(jitsufile)
     YAML.load(File.open(jitsufile, 'r').read)
   end
+
+  # Output jitsu build specification as build.ninja file(s).
+  #
+  # @param data [Hash] a build specification from e.g. Jitsu::read.
+  # @return nil
+  def self.output(data)
+  end
 end
