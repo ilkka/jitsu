@@ -65,7 +65,7 @@ targets:
 EOS
         end
         data = Jitsu.read Jitsu.jitsufile
-        data[:targets].keys.should == ['test1', 'test2']
+        data['targets'].keys.should == ['test1', 'test2']
       end
     end
     Dir.mktmpdir do |dir|
@@ -89,7 +89,7 @@ targets:
 EOS
         end
         data = Jitsu.read Jitsu.jitsufile
-        data[:targets].keys.should == ['aaa1', 'aaa2']
+        data['targets'].keys.should == ['aaa1', 'aaa2']
       end
     end
   end
