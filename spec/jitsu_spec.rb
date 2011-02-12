@@ -118,6 +118,36 @@ EOS
         data = Jitsu.read Jitsu.jitsufile
         Jitsu.output data
         Dir['build.ninja'].length.should == 1
+        ninjafile = <<-EOS
+cxxflags =
+ldflags =
+cxx = g++
+ld = g++
+
+rule cxx
+  description = CC ${in}
+  depfile = ${out}.d
+  command = ${cxx} -MMD -MF ${out}.d ${cxxflags} -c ${in} -o ${out}
+
+rule link
+  description = LD ${out}
+  command = ${ld} ${ldflags} -o ${out} ${in}
+
+rule archive
+  description = AR ${out}
+  command = ${ar} rT ${out} ${in}
+
+build aaa1a.o: cxx aaa1a.cpp
+  cxxflags = -g -Wall
+build aaa1b.o: cxx aaa1b.cpp
+  cxxflags = -g -Wall
+build aaa1: ld aaa1a.o aaa1b.o aaa2.a
+
+build aaa2.o: cxx aaa2.cpp
+  cxxflags = -ansi -pedantic
+build aaa2.a: archive aaa2.o
+EOS
+        File.open('build.ninja', 'r').read.should == ninjafile
       end
     end
   end
