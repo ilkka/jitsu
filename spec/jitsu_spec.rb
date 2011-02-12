@@ -68,5 +68,29 @@ EOS
         data[:targets].keys.should == ['test1', 'test2']
       end
     end
+    Dir.mktmpdir do |dir|
+      Dir.chdir dir do |dir|
+        File.open 'build.jitsu', 'w' do |f|
+          f.write <<-EOS
+---
+targets:
+  aaa1:
+    type: executable
+    sources:
+      - aaa1a.cpp
+      - aaa1b.cpp
+    cppflags: -g -Wall
+    dependencies:
+      - aaa2
+  aaa2:
+    type: library
+    sources: aaa2.cpp
+    cppflags: -ansi -pedantic
+EOS
+        end
+        data = Jitsu.read Jitsu.jitsufile
+        data[:targets].keys.should == ['aaa1', 'aaa2']
+      end
+    end
   end
 end
