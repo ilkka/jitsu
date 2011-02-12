@@ -2,6 +2,7 @@ require 'yaml'
 
 module Jitsu
   JITSU_FILE_NAME = 'build.jitsu'
+  NINJA_FILE_NAME = 'build.ninja'
 
   # Get path to ninja.
   #
@@ -39,5 +40,35 @@ module Jitsu
   # @param data [Hash] a build specification from e.g. Jitsu::read.
   # @return nil
   def self.output(data)
+    File.open NINJA_FILE_NAME, 'w' do |f|
+      f.write <<-EOS
+cxxflags =
+ldflags =
+cxx = g++
+ld = g++
+
+rule cxx
+  description = CC ${in}
+  depfile = ${out}.d
+  command = ${cxx} -MMD -MF ${out}.d ${cxxflags} -c ${in} -o ${out}
+
+rule link
+  description = LD ${out}
+  command = ${ld} ${ldflags} -o ${out} ${in}
+
+rule archive
+  description = AR ${out}
+  command = ${ar} rT ${out} ${in}
+
+EOS
+      data['targets'].each do |target,conf|
+        conf['sources'].each do |src|
+          f.write "build #{src.gsub /\.[Cc]\w+$/, '.o'}: #{src}"
+          if conf['cxxflags']
+            f.write "  cxxflags = #{conf['cxxflags']}"
+          end
+        end
+      end
+    end
   end
 end
