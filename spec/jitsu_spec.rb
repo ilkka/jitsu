@@ -93,4 +93,32 @@ EOS
       end
     end
   end
+
+  it "outputs a build.jitsu file" do
+    Dir.mktmpdir do |dir|
+      Dir.chdir dir do |dir|
+        File.open 'build.jitsu', 'w' do |f|
+          f.write <<-EOS
+---
+targets:
+  aaa1:
+    type: executable
+    sources:
+      - aaa1a.cpp
+      - aaa1b.cpp
+    cppflags: -g -Wall
+    dependencies:
+      - aaa2
+  aaa2:
+    type: library
+    sources: aaa2.cpp
+    cppflags: -ansi -pedantic
+EOS
+        end
+        data = Jitsu.read Jitsu.jitsufile
+        Jitsu.output data
+        Dir['build.ninja'].length.should == 1
+      end
+    end
+  end
 end
