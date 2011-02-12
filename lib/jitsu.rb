@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Jitsu
   JITSU_FILE_NAME = 'build.jitsu'
 
@@ -29,5 +31,6 @@ module Jitsu
   # @param jitsufile [String] path to jitsu file from e.g. Jitsu::jitsufile.
   # @return [Hash] a hash of the build specification.
   def self.read(jitsufile)
+    YAML.load(File.open(jitsufile, 'r').read)
   end
 end
