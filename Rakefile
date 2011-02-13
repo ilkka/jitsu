@@ -14,7 +14,7 @@ Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
   gem.name = "jitsu"
   gem.homepage = "http://github.com/ilkka/jitsu"
-  gem.license = "MIT"
+  gem.license = "GPLv3"
   gem.summary = %Q{Meta build system for Ninja}
   gem.description = <<-EOS
 Jitsu is a frontend or meta build system for Ninja
