@@ -19,12 +19,14 @@ When /^I run jitsu$/ do
 end
 
 When /^I run "([^"]*)"$/ do |command|
+  parts = command.split(/ /)
   Dir.chdir @tmpdir do |dir|
-    @output = IO.popen command
+    parts[0] = File.expand_path(parts[0]) if parts[0].index(/\//)
+    @output = `#{parts.join(' ')}`
   end
 end
 
-Then /^the output should be "([^"]*)"$/ do |arg1|
-    pending # express the regexp above with the code you wish you had
+Then /^the output should be "([^"]*)"$/ do |desired|
+  pending # express the regexp above with the code you wish you had
 end
 
