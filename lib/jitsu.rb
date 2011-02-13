@@ -62,7 +62,9 @@ rule archive
 
 EOS
       data['targets'].each do |target,conf|
-        conf['sources'].each do |src|
+        sources = conf['sources']
+        sources = [sources] if sources.is_a? String
+        sources.each do |src|
           f.write "build #{src.gsub /\.[Cc]\w+$/, '.o'}: #{src}"
           if conf['cxxflags']
             f.write "  cxxflags = #{conf['cxxflags']}"
