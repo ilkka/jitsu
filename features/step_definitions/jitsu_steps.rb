@@ -26,7 +26,7 @@ When /^I run "([^"]*)"$/ do |command|
   end
 end
 
-Then /^the output should be "([^"]*)"$/ do |desired|
-  @output.should == desired
+Then /^the output should be "([^"]*)" with a newline$/ do |desired|
+  @output.should == desired + "\n"
 end
 
