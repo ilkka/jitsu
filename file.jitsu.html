@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
+<title>File: jitsu</title>
+<link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="_index.html" title="Index">Index</a> &raquo; 
+    <span class="title">File: jitsu</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><div id='filecontents'><p>
+Feature: Build C++ programs
+</p>
+<pre class="code">
+  In order to build C++ programs
+  As a user
+  I want to use Jitsu to generate build.ninja files
+
+  Scenario: Build a simple executable
+    Given a directory
+    And a file &quot;main.cpp&quot; with contents
+      &quot;&quot;&quot;
+      #include &lt;iostream&gt;
+
+      int main(int argc, char* argv[]) {
+        std::cout &lt;&lt; &quot;Hello World&quot; &lt;&lt; std::endl;
+        return 0;
+      }
+      &quot;&quot;&quot;
+    And a file &quot;build.jitsu&quot; with contents
+      &quot;&quot;&quot;
+      ---
+      targets:
+        target:
+          type: executable
+          sources:
+            * main.cpp
+      &quot;&quot;&quot;
+    When I run jitsu
+    And I run &quot;ninja target&quot;
+    And I run &quot;./target&quot;
+    Then the output should be &quot;Hello World&quot; with a newline
+
+  Scenario: Build an executable with a library
+    Given a directory
+    And a file &quot;lib.cpp&quot; with contents
+      &quot;&quot;&quot;
+      #include &lt;iostream&gt;
+
+      void print_hello() {
+        std::cout &lt;&lt; &quot;Hello World&quot; &lt;&lt; std::endl;
+      }
+      &quot;&quot;&quot;
+    And a file &quot;main.cpp&quot; with contents
+      &quot;&quot;&quot;
+      void print_hello();
+
+      int main(int argc, char* argv[]) {
+        print_hello();
+        return 0;
+      }
+      &quot;&quot;&quot;
+    And a file &quot;build.jitsu&quot; with contents
+      &quot;&quot;&quot;
+      ---
+      targets:
+        hello:
+          type: executable
+          sources:
+            * main.cpp
+          dependencies:
+            * lib.a
+        lib.a:
+          type: library
+          sources:
+            * lib.cpp
+      &quot;&quot;&quot;
+    When I run jitsu
+    And I run &quot;ninja hello&quot;
+    And I run &quot;./hello&quot;
+    Then the output should be &quot;Hello World&quot; with a newline
+</pre>
+</div></div>
+    
+    <div id="footer">
+  Generated on Sun Feb 13 20:57:29 2011 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.6.4 (ruby-1.9.2).
+</div>
+
+  </body>
+</html>
