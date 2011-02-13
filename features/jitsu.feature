@@ -26,4 +26,4 @@ Feature: Build C++ programs
     When I run jitsu
     And I run "ninja target"
     And I run "./target"
-    Then the output should be "Hello world\n"
+    Then the output should be "Hello World" with a newline
