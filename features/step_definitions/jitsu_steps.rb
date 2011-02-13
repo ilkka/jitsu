@@ -18,8 +18,10 @@ When /^I run jitsu$/ do
   end
 end
 
-When /^I run "([^"]*)"$/ do |arg1|
-    pending # express the regexp above with the code you wish you had
+When /^I run "([^"]*)"$/ do |command|
+  Dir.chdir @tmpdir do |dir|
+    @output = IO.popen command
+  end
 end
 
 Then /^the output should be "([^"]*)"$/ do |arg1|
