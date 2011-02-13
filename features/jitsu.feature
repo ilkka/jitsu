@@ -19,9 +19,9 @@ Feature: Build C++ programs
       ---
       targets:
         target:
-        type: executable
-        sources:
-          - main.cpp
+          type: executable
+          sources:
+            - main.cpp
       """
     When I run jitsu
     And I run "ninja target"
