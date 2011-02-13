@@ -60,7 +60,8 @@ targets:
       - test2
   test2:
     type: library
-    sources: test2.cpp
+    sources:
+      - test2.cpp
     cxxflags: -ansi -pedantic
 EOS
         end
@@ -84,7 +85,8 @@ targets:
       - aaa2
   aaa2:
     type: library
-    sources: aaa2.cpp
+    sources:
+      - aaa2.cpp
     cxxflags: -ansi -pedantic
 EOS
         end
@@ -111,7 +113,8 @@ targets:
       - aaa2.a
   aaa2.a:
     type: library
-    sources: aaa2.cpp
+    sources: 
+      - aaa2.cpp
     cxxflags: -ansi -pedantic
 EOS
         end
