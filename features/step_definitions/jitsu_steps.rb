@@ -27,6 +27,6 @@ When /^I run "([^"]*)"$/ do |command|
 end
 
 Then /^the output should be "([^"]*)"$/ do |desired|
-  pending # express the regexp above with the code you wish you had
+  @output.should == desired
 end
 
