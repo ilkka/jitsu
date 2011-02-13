@@ -63,14 +63,28 @@ rule archive
 EOS
       data['targets'].each do |target,conf|
         sources = conf['sources']
-        sources = [sources] if sources.is_a? String
         sources.each do |src|
-          f.write "build #{src.gsub /\.[Cc]\w+$/, '.o'}: cxx #{src}\n"
+          f.write "build #{source_to_object src}: cxx #{src}\n"
           if conf['cxxflags']
             f.write "  cxxflags = #{conf['cxxflags']}\n"
           end
         end
+        f.write "build #{target}: "
+        case conf['type']
+        when 'executable'
+          f.write "link #{sources_to_objects sources}"
+          f.write(' ' + conf['dependencies'].join(' ')) if conf['dependencies']
+          f.write "\n\n"
+        end
       end
     end
+  end
+
+  def self.source_to_object(src)
+    src.gsub /\.[Cc]\w+$/, '.o'
+  end
+
+  def self.sources_to_objects(srcs)
+    srcs.map { |src| source_to_object src }
   end
 end
