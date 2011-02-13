@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jitsu}
-  s.version = "0.0.0"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ilkka Laukkanen"]
@@ -39,6 +39,7 @@ buildfiles.
     "features/jitsu.feature",
     "features/step_definitions/jitsu_steps.rb",
     "features/support/env.rb",
+    "jitsu.gemspec",
     "lib/jitsu.rb",
     "spec/jitsu_spec.rb",
     "spec/spec_helper.rb"
