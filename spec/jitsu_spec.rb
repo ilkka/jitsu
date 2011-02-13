@@ -55,13 +55,13 @@ targets:
   test1:
     type: executable
     sources: test1.cpp
-    cppflags: -g -Wall
+    cxxflags: -g -Wall
     dependencies:
       - test2
   test2:
     type: library
     sources: test2.cpp
-    cppflags: -ansi -pedantic
+    cxxflags: -ansi -pedantic
 EOS
         end
         data = Jitsu.read Jitsu.jitsufile
@@ -79,13 +79,13 @@ targets:
     sources:
       - aaa1a.cpp
       - aaa1b.cpp
-    cppflags: -g -Wall
+    cxxflags: -g -Wall
     dependencies:
       - aaa2
   aaa2:
     type: library
     sources: aaa2.cpp
-    cppflags: -ansi -pedantic
+    cxxflags: -ansi -pedantic
 EOS
         end
         data = Jitsu.read Jitsu.jitsufile
@@ -106,13 +106,13 @@ targets:
     sources:
       - aaa1a.cpp
       - aaa1b.cpp
-    cppflags: -g -Wall
+    cxxflags: -g -Wall
     dependencies:
       - aaa2
   aaa2:
     type: library
     sources: aaa2.cpp
-    cppflags: -ansi -pedantic
+    cxxflags: -ansi -pedantic
 EOS
         end
         data = Jitsu.read Jitsu.jitsufile
