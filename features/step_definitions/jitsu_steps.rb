@@ -13,7 +13,9 @@ Given /^a file "([^"]*)" with contents$/ do |filename, contents|
 end
 
 When /^I run jitsu$/ do
-    pending # express the regexp above with the code you wish you had
+  Dir.chdir @tmpdir do |dir|
+    Jitsu.output(Jitsu.read(Jitsu.jitsufile))
+  end
 end
 
 When /^I run "([^"]*)"$/ do |arg1|
