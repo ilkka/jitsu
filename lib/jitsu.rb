@@ -65,9 +65,9 @@ EOS
         sources = conf['sources']
         sources = [sources] if sources.is_a? String
         sources.each do |src|
-          f.write "build #{src.gsub /\.[Cc]\w+$/, '.o'}: #{src}"
+          f.write "build #{src.gsub /\.[Cc]\w+$/, '.o'}: #{src}\n"
           if conf['cxxflags']
-            f.write "  cxxflags = #{conf['cxxflags']}"
+            f.write "  cxxflags = #{conf['cxxflags']}\n"
           end
         end
       end
