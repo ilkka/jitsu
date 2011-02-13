@@ -4,7 +4,8 @@ Feature: Build C++ programs
   I want to use Jitsu to generate build.ninja files
 
   Scenario: Build a simple executable
-    Given a file "main.cpp" with contents
+    Given a directory
+    And a file "main.cpp" with contents
       """
       #include <iostream>
 
