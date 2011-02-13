@@ -126,6 +126,7 @@ cxxflags =
 ldflags =
 cxx = g++
 ld = g++
+ar = ar
 
 rule cxx
   description = CC ${in}
