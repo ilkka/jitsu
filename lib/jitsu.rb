@@ -59,9 +59,9 @@ rule link
 rule archive
   description = AR ${out}
   command = ${ar} rT ${out} ${in}
-
 EOS
       data['targets'].each do |target,conf|
+        f.write "\n"
         sources = conf['sources']
         sources.each do |src|
           f.write "build #{source_to_object src}: cxx #{src}\n"
@@ -74,8 +74,10 @@ EOS
         when 'executable'
           f.write "link #{sources_to_objects(sources).join(' ')}"
           f.write(' ' + conf['dependencies'].join(' ')) if conf['dependencies']
-          f.write "\n\n"
+        when 'library'
+          f.write "archive #{sources_to_objects(sources).join(' ')}"
         end
+        f.write "\n"
       end
     end
   end
