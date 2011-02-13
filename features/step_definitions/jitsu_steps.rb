@@ -1,5 +1,15 @@
-Given /^a file "([^"]*)" with contents$/ do |arg1, string|
-    pending # express the regexp above with the code you wish you had
+require 'tmpdir'
+
+Given /^a directory$/ do
+  @tmpdir = Dir.mktmpdir
+end
+
+Given /^a file "([^"]*)" with contents$/ do |filename, contents|
+  Dir.chdir @tmpdir do |dir|
+    File.open filename, 'w' do |f|
+      f.write contents
+    end
+  end
 end
 
 When /^I run jitsu$/ do
