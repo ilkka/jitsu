@@ -72,7 +72,7 @@ EOS
         f.write "build #{target}: "
         case conf['type']
         when 'executable'
-          f.write "link #{sources_to_objects sources}"
+          f.write "link #{sources_to_objects(sources).join(' ')}"
           f.write(' ' + conf['dependencies'].join(' ')) if conf['dependencies']
           f.write "\n\n"
         end
