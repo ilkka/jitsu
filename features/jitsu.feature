@@ -1,9 +1,28 @@
-Feature: something something
-  In order to something something
-  A user something something
-  something something something
+Feature: Build C++ programs
+  In order to build C++ programs
+  As a user
+  I want to use Jitsu to generate build.ninja files
 
-  Scenario: something something
-    Given inspiration
-    When I create a sweet new gem
-    Then everyone should see how awesome I am
+  Scenario: Build a simple executable
+    Given a file "main.cpp" with contents
+      """
+      #include <iostream>
+
+      int main(int argc. char* argv[]) {
+        std::cout << "Hello World" << std::endl;
+        return 0;
+      }
+      """
+    And a file "build.jitsu" with contents
+      """
+      ---
+      targets:
+        target:
+        type: executable
+        sources:
+          - main.cpp
+      """
+    When I run jitsu
+    And I run "ninja target"
+    And I run "./target"
+    Then the output should be "Hello world"
