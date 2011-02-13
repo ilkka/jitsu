@@ -141,7 +141,7 @@ build aaa1a.o: cxx aaa1a.cpp
   cxxflags = -g -Wall
 build aaa1b.o: cxx aaa1b.cpp
   cxxflags = -g -Wall
-build aaa1: ld aaa1a.o aaa1b.o aaa2.a
+build aaa1: link aaa1a.o aaa1b.o aaa2.a
 
 build aaa2.o: cxx aaa2.cpp
   cxxflags = -ansi -pedantic
