@@ -1,6 +1,6 @@
 = jitsu
 
-[Ninja](https://github.com/martine/ninja) is an excellent build system, but
+Ninja (https://github.com/martine/ninja) is an excellent build system, but
 Ninja files are hard to write, by design. Jitsu is a simple meta build system
 that writes Ninja files for you from YAML project descriptions.
 
