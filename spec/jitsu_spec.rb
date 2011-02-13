@@ -108,8 +108,8 @@ targets:
       - aaa1b.cpp
     cxxflags: -g -Wall
     dependencies:
-      - aaa2
-  aaa2:
+      - aaa2.a
+  aaa2.a:
     type: library
     sources: aaa2.cpp
     cxxflags: -ansi -pedantic
