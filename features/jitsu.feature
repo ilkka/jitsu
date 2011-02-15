@@ -106,6 +106,8 @@ Feature: Build C++ programs
           type: executable
           sources:
             - main.cpp
+          dependencies:
+            - lib.so
       """
     When I run jitsu
     And I run "ninja all"
