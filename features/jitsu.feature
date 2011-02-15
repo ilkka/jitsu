@@ -67,3 +67,50 @@ Feature: Build C++ programs
     And I run "./hello"
     Then the output should be "Hello World" with a newline
 
+  Scenario: Build a dynamic library
+    Given a directory
+    And a file "lib.h" with contents
+      """
+      #include <string>
+
+      namespace Lib {
+      std::string greeting();
+      }
+      """
+    And a file "lib.cpp" with contents
+      """
+      #include "lib.h"
+
+      std::string Lib::greeting() {
+        return std::string("Hello World");
+      }
+      """
+    And a file "main.cpp" with contents
+      """
+      #include <iostream>
+      #include "lib.h"
+
+      int main(int argc, char* argv[]) {
+        std::cout << Lib::greeting() << std::endl;
+        return 0;
+      }
+      """
+    And a file "build.jitsu" with contents
+      """
+      ---
+      targets:
+        lib.so:
+          type: library
+          sources:
+            - lib.cpp
+        blah:
+          type: executable
+          sources:
+            - main.cpp
+          dependencies:
+            - lib.so
+      """
+    When I run jitsu
+    And I run "ninja blah"
+    And I run "env LD_LIBRARY_PATH=. ./blah"
+    Then the output should be "Hello World" with a newline
