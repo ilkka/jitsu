@@ -108,7 +108,6 @@ targets:
     sources:
       - aaa1a.cpp
       - aaa1b.cpp
-    cxxflags: -g -Wall
     dependencies:
       - aaa2.a
       - aaa3.so
@@ -159,17 +158,13 @@ build aaa2.o: cxx aaa2.cpp
 build aaa2.a: archive aaa2.o
 
 build aaa1a.o: cxx aaa1a.cpp
-  cxxflags = -g -Wall
 build aaa1b.o: cxx aaa1b.cpp
-  cxxflags = -g -Wall
 build aaa1: link aaa1a.o aaa1b.o aaa2.a aaa3.so
 EOS
         else
           ninjafile += <<-EOS
 build aaa1a.o: cxx aaa1a.cpp
-  cxxflags = -g -Wall
 build aaa1b.o: cxx aaa1b.cpp
-  cxxflags = -g -Wall
 build aaa1: link aaa1a.o aaa1b.o aaa2.a aaa3.so
 
 build aaa2.o: cxx aaa2.cpp
