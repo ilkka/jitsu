@@ -152,7 +152,7 @@ EOS
 build aaa3.o: cxx aaa3.cpp
   cxxflags = ${cxxflags} -fPIC
 build aaa3.so: link aaa3.o
-  ldflags = ${ldflags} -shared
+  ldflags = ${ldflags} -shared -Wl,-soname,aaa3.so
 
 build aaa2.o: cxx aaa2.cpp
   cxxflags = -ansi -pedantic
@@ -177,7 +177,7 @@ build aaa2.a: archive aaa2.o
 build aaa3.o: cxx aaa3.cpp
   cxxflags = ${cxxflags} -fPIC
 build aaa3.so: link aaa3.o
-  ldflags = ${ldflags} -shared
+  ldflags = ${ldflags} -shared -Wl,-soname,aaa3.so
 
 build all: phony || aaa1 aaa2.a aaa3.so
 EOS
