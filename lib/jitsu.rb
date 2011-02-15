@@ -78,7 +78,9 @@ EOS
               cxxflags = '${cxxflags} -fPIC'
             end
           end
-          f.write "  cxxflags = #{cxxflags}\n"
+          if cxxflags
+            f.write "  cxxflags = #{cxxflags}\n"
+          end
         end
         f.write "build #{target}: "
         case conf['type']
