@@ -162,7 +162,7 @@ build aaa1a.o: cxx aaa1a.cpp
 build aaa1b.o: cxx aaa1b.cpp
 build aaa1: link aaa1a.o aaa1b.o aaa2.a aaa3.so
 
-build all: phony || aaa1 aaa2.a aaa3.so
+build all: phony || aaa3.so aaa2.a aaa1
 EOS
         else
           ninjafile += <<-EOS
