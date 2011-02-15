@@ -2,6 +2,7 @@ require 'tmpdir'
 
 Given /^a directory$/ do
   @tmpdir = Dir.mktmpdir
+  puts "Tempdir for this scenario: #{@tmpdir}"
 end
 
 Given /^a file "([^"]*)" with contents$/ do |filename, contents|
