@@ -66,9 +66,18 @@ EOS
         sources = conf['sources']
         sources.each do |src|
           f.write "build #{source_to_object src}: cxx #{src}\n"
+          cxxflags = nil
           if conf['cxxflags']
-            f.write "  cxxflags = #{conf['cxxflags']}\n"
+            cxxflags = conf['cxxflags']
           end
+          if conf['type'] == 'dynamic_library'
+            if cxxflags
+              cxxflags = "#{cxxflags} -fPIC"
+            else
+              cxxflags = '${cxxflags} -fPIC'
+            end
+          end
+          f.write "  cxxflags = #{cxxflags}\n"
         end
         f.write "build #{target}: "
         case conf['type']
