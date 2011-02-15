@@ -75,7 +75,7 @@ EOS
         when 'executable'
           f.write "link #{sources_to_objects(sources).join(' ')}"
           f.write(' ' + conf['dependencies'].join(' ')) if conf['dependencies']
-        when 'library'
+        when 'static_library'
           f.write "archive #{sources_to_objects(sources).join(' ')}"
         end
         f.write "\n"
