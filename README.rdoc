@@ -1,4 +1,4 @@
-= jitsu
+= Jitsu
 
 Ninja (https://github.com/martine/ninja) is an excellent build system, but
 Ninja files are hard to write, by design. Jitsu is a simple meta build system
@@ -7,7 +7,11 @@ that writes Ninja files for you from YAML project descriptions.
 For now, simple executables and static libraries are supported. See the
 features dir for examples and http://ilkka.github.com/jitsu for docs.
 
-== Contributing to jitsu
+== Using Jitsu
+
+See the howto[link:howto.html].
+
+== Contributing to Jitsu
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
