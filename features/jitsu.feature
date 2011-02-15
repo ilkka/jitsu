@@ -58,7 +58,7 @@ Feature: Build C++ programs
           dependencies:
             - lib.a
         lib.a:
-          type: library
+          type: static_library
           sources:
             - lib.cpp
       """
@@ -99,7 +99,7 @@ Feature: Build C++ programs
       ---
       targets:
         lib.so:
-          type: library
+          type: dynamic_library
           sources:
             - lib.cpp
         blah:

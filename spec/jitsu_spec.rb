@@ -59,7 +59,7 @@ targets:
     dependencies:
       - test2
   test2:
-    type: library
+    type: static_library
     sources:
       - test2.cpp
     cxxflags: -ansi -pedantic
@@ -84,7 +84,7 @@ targets:
     dependencies:
       - aaa2
   aaa2:
-    type: library
+    type: dynamic_library
     sources:
       - aaa2.cpp
     cxxflags: -ansi -pedantic
@@ -112,7 +112,7 @@ targets:
     dependencies:
       - aaa2.a
   aaa2.a:
-    type: library
+    type: static_library
     sources: 
       - aaa2.cpp
     cxxflags: -ansi -pedantic
