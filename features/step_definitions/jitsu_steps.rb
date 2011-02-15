@@ -24,6 +24,7 @@ When /^I run "([^"]*)"$/ do |command|
   Dir.chdir @tmpdir do |dir|
     parts[0] = File.expand_path(parts[0]) if parts[0].index(/\//)
     @output = `#{parts.join(' ')}`
+    $?.should == 0
   end
 end
 
