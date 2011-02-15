@@ -45,4 +45,5 @@ Cucumber::Rake::Task.new(:features)
 task :default => :spec
 
 require 'yard'
-YARD::Rake::YardocTask.new
+yardtask = YARD::Rake::YardocTask.new
+yardtask.after = Proc.new { system "cucumber -f html -o doc/howto.html" }
