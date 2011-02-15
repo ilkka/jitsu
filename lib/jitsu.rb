@@ -136,10 +136,18 @@ EOS
     out.write "  ldflags = #{conf['ldflags']}\n"
   end
 
+  # Convert sourcefile name to corresponding object file name.
+  #
+  # @param src [String] source file path.
+  # @return [String] object file path.
   def self.source_to_object(src)
     src.gsub /\.[Cc]\w+$/, '.o'
   end
 
+  # Convert a list of sourcefile names to corresponding object file names.
+  #
+  # @param srcs [Enumerable] source file paths.
+  # @return [Enumerable] object file paths.
   def self.sources_to_objects(srcs)
     srcs.map { |src| source_to_object src }
   end
