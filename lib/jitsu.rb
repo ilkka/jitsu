@@ -65,51 +65,45 @@ EOS
         f.write "\n"
         sources = conf['sources']
         objects = sources_to_objects(sources).join(' ')
-        sources.each do |src|
-          f.write "build #{source_to_object src}: cxx #{src}\n"
-          cxxflags = nil
-          if conf['cxxflags']
-            cxxflags = conf['cxxflags']
-          end
-          if conf['type'] == 'dynamic_library'
-            if cxxflags
-              cxxflags = "#{cxxflags} -fPIC"
-            else
-              cxxflags = '${cxxflags} -fPIC'
-            end
-          end
-          if cxxflags
-            f.write "  cxxflags = #{cxxflags}\n"
-          end
-        end
-        f.write "build #{target}: "
-        ldflags = nil
-        case conf['type']
-        when 'executable'
-          f.write "link #{objects}"
-        when 'static_library'
-          f.write "archive #{objects}"
-        when 'dynamic_library'
-          f.write "link #{objects}"
-        end
-        f.write(' ' + conf['dependencies'].join(' ')) if conf['dependencies']
-        f.write "\n"
-        if conf['ldflags']
-          ldflags = conf['ldflags']
-        end
-        if conf['type'] == 'dynamic_library'
-          if ldflags
-            ldflags = "#{ldflags} -shared"
-          else
-            ldflags = '${ldflags} -shared'
-          end
-        end
-        if ldflags
-          f.write "  ldflags = #{ldflags}\n"
-        end
+        Jitsu.send "handle_#{conf['type']}".to_sym, f, target, sources, objects, conf
       end
       f.write("\nbuild all: phony || #{data['targets'].keys.join(' ')}\n")
     end
+  end
+
+  def self.output_sources(out, sources, conf)
+    cxxflags = conf['cxxflags']
+    sources.each do |src|
+      out.write "build #{source_to_object src}: cxx #{src}\n"
+      out.write "  cxxflags = #{cxxflags}\n" if cxxflags
+    end
+  end
+
+  def self.handle_executable(out, target, sources, objects, conf)
+    output_sources(out, sources, conf)
+    out.write "build #{target}: link #{objects}"
+    out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
+    out.write "\n"
+    out.write "  ldflags = #{conf['ldflags']}\n" if conf['ldflags']
+  end
+
+  def self.handle_static_library(out, target, sources, objects, conf)
+    output_sources(out, sources, conf)
+    out.write "build #{target}: archive #{objects}"
+    out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
+    out.write "\n"
+  end
+
+  def self.handle_dynamic_library(out, target, sources, objects, conf)
+    conf['cxxflags'] ||= '${cxxflags}'
+    conf['cxxflags'] += ' -fPIC'
+    output_sources(out, sources, conf)
+    out.write "build #{target}: link #{objects}"
+    out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
+    out.write "\n"
+    conf['ldflags'] ||= '${ldflags}'
+    conf['ldflags'] += " -shared -Wl,-soname,#{target}"
+    out.write "  ldflags = #{conf['ldflags']}\n"
   end
 
   def self.source_to_object(src)
