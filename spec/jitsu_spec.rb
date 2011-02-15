@@ -160,6 +160,8 @@ build aaa2.a: archive aaa2.o
 build aaa1a.o: cxx aaa1a.cpp
 build aaa1b.o: cxx aaa1b.cpp
 build aaa1: link aaa1a.o aaa1b.o aaa2.a aaa3.so
+
+build all: phony || aaa1 aaa2.a aaa3.so
 EOS
         else
           ninjafile += <<-EOS
@@ -174,6 +176,8 @@ build aaa2.a: archive aaa2.o
 build aaa3.o: cxx aaa3.cpp
   cxxflags = ${cxxflags} -fPIC
 build aaa3.so: link aaa3.o
+
+build all: phony || aaa1 aaa2.a aaa3.so
 EOS
         end
         File.open('build.ninja', 'r').read.should == ninjafile
