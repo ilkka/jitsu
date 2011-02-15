@@ -71,6 +71,12 @@ EOS
     end
   end
 
+  # Output build rules for a list of sources.
+  #
+  # @param out [IO] the output stream where output is written.
+  # @param sources [Enumerable] a list of sourcefile names to output rules
+  # for.
+  # @param conf [Hash] the entire build spec hash for this target.
   def self.output_sources(out, sources, conf)
     cxxflags = conf['cxxflags']
     sources.each do |src|
@@ -79,6 +85,14 @@ EOS
     end
   end
 
+  # Output build rules for one executable target.
+  #
+  # @param out [IO] the output stream where output is written.
+  # @param target [String] the filename of the target.
+  # @param sources [Enumerable] a list of sourcefile names to output rules
+  # for.
+  # @param objects [Enumerable] a list of all object files for the target.
+  # @param conf [Hash] the entire build spec hash for this target.
   def self.handle_executable(out, target, sources, objects, conf)
     output_sources(out, sources, conf)
     out.write "build #{target}: link #{objects}"
@@ -87,6 +101,14 @@ EOS
     out.write "  ldflags = #{conf['ldflags']}\n" if conf['ldflags']
   end
 
+  # Output build rules for one static library target.
+  #
+  # @param out [IO] the output stream where output is written.
+  # @param target [String] the filename of the target.
+  # @param sources [Enumerable] a list of sourcefile names to output rules
+  # for.
+  # @param objects [Enumerable] a list of all object files for the target.
+  # @param conf [Hash] the entire build spec hash for this target.
   def self.handle_static_library(out, target, sources, objects, conf)
     output_sources(out, sources, conf)
     out.write "build #{target}: archive #{objects}"
@@ -94,6 +116,14 @@ EOS
     out.write "\n"
   end
 
+  # Output build rules for one dynamic library target.
+  #
+  # @param out [IO] the output stream where output is written.
+  # @param target [String] the filename of the target.
+  # @param sources [Enumerable] a list of sourcefile names to output rules
+  # for.
+  # @param objects [Enumerable] a list of all object files for the target.
+  # @param conf [Hash] the entire build spec hash for this target.
   def self.handle_dynamic_library(out, target, sources, objects, conf)
     conf['cxxflags'] ||= '${cxxflags}'
     conf['cxxflags'] += ' -fPIC'
