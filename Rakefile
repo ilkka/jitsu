@@ -43,7 +43,7 @@ end
 require 'cucumber/rake/task'
 Cucumber::Rake::Task.new(:features)
 
-task :default => :spec
+task :default => [:spec, :features]
 
 require 'yard'
 yardtask = YARD::Rake::YardocTask.new
