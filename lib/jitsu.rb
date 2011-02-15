@@ -64,6 +64,7 @@ EOS
       data['targets'].each do |target,conf|
         f.write "\n"
         sources = conf['sources']
+        objects = sources_to_objects(sources).join(' ')
         sources.each do |src|
           f.write "build #{source_to_object src}: cxx #{src}\n"
           cxxflags = nil
@@ -82,11 +83,13 @@ EOS
         f.write "build #{target}: "
         case conf['type']
         when 'executable'
-          f.write "link #{sources_to_objects(sources).join(' ')}"
-          f.write(' ' + conf['dependencies'].join(' ')) if conf['dependencies']
+          f.write "link #{objects}"
         when 'static_library'
-          f.write "archive #{sources_to_objects(sources).join(' ')}"
+          f.write "archive #{objects}"
+        when 'dynamic_library'
+          f.write "link #{objects}"
         end
+        f.write(' ' + conf['dependencies'].join(' ')) if conf['dependencies']
         f.write "\n"
       end
     end
