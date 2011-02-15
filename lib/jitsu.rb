@@ -94,6 +94,7 @@ EOS
         f.write(' ' + conf['dependencies'].join(' ')) if conf['dependencies']
         f.write "\n"
       end
+      f.write("\nbuild all: phony || #{data['targets'].keys.join(' ')}\n")
     end
   end
 
