@@ -83,6 +83,7 @@ EOS
           end
         end
         f.write "build #{target}: "
+        ldflags = nil
         case conf['type']
         when 'executable'
           f.write "link #{objects}"
@@ -93,6 +94,19 @@ EOS
         end
         f.write(' ' + conf['dependencies'].join(' ')) if conf['dependencies']
         f.write "\n"
+        if conf['ldflags']
+          ldflags = conf['ldflags']
+        end
+        if conf['type'] == 'dynamic_library'
+          if ldflags
+            ldflags = "#{ldflags} -shared"
+          else
+            ldflags = '${ldflags} -shared'
+          end
+        end
+        if ldflags
+          f.write "  ldflags = #{ldflags}\n"
+        end
       end
       f.write("\nbuild all: phony || #{data['targets'].keys.join(' ')}\n")
     end
