@@ -250,10 +250,8 @@ EOS
         # the targets are reversed on 1.8.7 :p
         if RUBY_VERSION.start_with? '1.8'
           ninjafile += <<-EOS
-build aaa3.o: cxx aaa3.cpp
-  cxxflags = ${cxxflags} -fPIC
-build aaa3.so: link aaa3.o
-  ldflags = ${ldflags} -shared -Wl,-soname,aaa3.so
+build aaa3.o: ltcxx aaa3.cpp
+build aaa3.la: ltlink aaa3.o
 
 build aaa2.o: cxx aaa2.cpp
   cxxflags = -ansi -pedantic
@@ -261,7 +259,7 @@ build aaa2.a: archive aaa2.o
 
 build aaa1a.o: cxx aaa1a.cpp
 build aaa1b.o: cxx aaa1b.cpp
-build aaa1: link aaa1a.o aaa1b.o aaa2.a aaa3.so
+build aaa1: ltlink aaa1a.o aaa1b.o aaa2.a aaa3.la
 
 build all: phony || aaa3.so aaa2.a aaa1
 EOS
@@ -269,16 +267,14 @@ EOS
           ninjafile += <<-EOS
 build aaa1a.o: cxx aaa1a.cpp
 build aaa1b.o: cxx aaa1b.cpp
-build aaa1: link aaa1a.o aaa1b.o aaa2.a aaa3.so
+build aaa1: ltlink aaa1a.o aaa1b.o aaa2.a aaa3.la
 
 build aaa2.o: cxx aaa2.cpp
   cxxflags = -ansi -pedantic
 build aaa2.a: archive aaa2.o
 
-build aaa3.o: cxx aaa3.cpp
-  cxxflags = ${cxxflags} -fPIC
-build aaa3.so: link aaa3.o
-  ldflags = ${ldflags} -shared -Wl,-soname,aaa3.so
+build aaa3.o: ltcxx aaa3.cpp
+build aaa3.la: ltlink aaa3.o
 
 build all: phony || aaa1 aaa2.a aaa3.so
 EOS
