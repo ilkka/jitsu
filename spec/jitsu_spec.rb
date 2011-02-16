@@ -240,11 +240,11 @@ rule archive
 rule ltcxx
   description = CC ${in}
   depfile = ${out}.d
-  command = ${libtool} --mode=compile ${cxx} -MMD -MF ${out}.d ${cxxflags} -c ${in}
+  command = ${libtool} --quiet --mode=compile ${cxx} -MMD -MF ${out}.d ${cxxflags} -c ${in}
 
 rule ltlink
   description = LD ${out}
-  command = ${libtool} --mode=link ${ld} ${ldflags} -o ${out} ${in}
+  command = ${libtool} --quiet --mode=link ${ld} ${ldflags} -o ${out} ${in}
 
 EOS
         # the targets are reversed on 1.8.7 :p
