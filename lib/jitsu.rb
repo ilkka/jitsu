@@ -91,8 +91,7 @@ EOS
       data['targets'].each do |target,conf|
         f.write "\n"
         sources = conf['sources']
-        objects = sources_to_objects(sources).join(' ')
-        Jitsu.send "handle_#{conf['type']}".to_sym, f, target, sources, objects, conf, data['targets']
+        Jitsu.send "handle_#{conf['type']}".to_sym, f, target, sources, conf, data['targets']
       end
       f.write("\nbuild all: phony || #{data['targets'].keys.join(' ')}\n")
     end
@@ -121,16 +120,15 @@ EOS
   # @param target [String] the filename of the target.
   # @param sources [Enumerable] a list of sourcefile names to output rules
   # for.
-  # @param objects [Enumerable] a list of all object files for the target.
   # @param conf [Hash] the entire build spec hash for this target.
   # @param targets [Hash] all targets for the build
-  def self.handle_executable(out, target, sources, objects, conf, targets)
+  def self.handle_executable(out, target, sources, conf, targets)
     output_sources(out, sources, conf)
     libtool = libtool_needed_for targets.select { |key,val|
       conf['dependencies'] and conf['dependencies'].include? key
     }
     rule = libtool ? "ltlink" : "link"
-    out.write "build #{target}: #{rule} #{objects}"
+    out.write "build #{target}: #{rule} #{sources_to_objects(sources).join ' '}"
     out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
     out.write "\n"
     out.write "  ldflags = #{conf['ldflags']}\n" if conf['ldflags']
@@ -142,12 +140,11 @@ EOS
   # @param target [String] the filename of the target.
   # @param sources [Enumerable] a list of sourcefile names to output rules
   # for.
-  # @param objects [Enumerable] a list of all object files for the target.
   # @param conf [Hash] the entire build spec hash for this target.
   # @param targets [Hash] all targets for the build
-  def self.handle_static_library(out, target, sources, objects, conf, targets)
+  def self.handle_static_library(out, target, sources, conf, targets)
     output_sources(out, sources, conf)
-    out.write "build #{target}: archive #{objects}"
+    out.write "build #{target}: archive #{sources_to_objects(sources).join ' '}"
     out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
     out.write "\n"
   end
@@ -158,14 +155,13 @@ EOS
   # @param target [String] the filename of the target.
   # @param sources [Enumerable] a list of sourcefile names to output rules
   # for.
-  # @param objects [Enumerable] a list of all object files for the target.
   # @param conf [Hash] the entire build spec hash for this target.
   # @param targets [Hash] all targets for the build
-  def self.handle_dynamic_library(out, target, sources, objects, conf, targets)
+  def self.handle_dynamic_library(out, target, sources, conf, targets)
     conf['cxxflags'] ||= '${cxxflags}'
     conf['cxxflags'] += ' -fPIC'
     output_sources(out, sources, conf)
-    out.write "build #{target}: link #{objects}"
+    out.write "build #{target}: link #{sources_to_objects(sources).join ' '}"
     out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
     out.write "\n"
     conf['ldflags'] ||= '${ldflags}'
@@ -179,12 +175,11 @@ EOS
   # @param target [String] the filename of the target.
   # @param sources [Enumerable] a list of sourcefile names to output rules
   # for.
-  # @param objects [Enumerable] a list of all object files for the target.
   # @param conf [Hash] the entire build spec hash for this target.
   # @param targets [Hash] all targets for the build
-  def self.handle_libtool_library(out, target, sources, objects, conf, targets)
+  def self.handle_libtool_library(out, target, sources, conf, targets)
     output_sources(out, sources, conf)
-    out.write "build #{target}: ltlink #{objects}"
+    out.write "build #{target}: ltlink #{sources_to_ltobjects(sources).join ' '}"
     out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
     out.write "\n"
     out.write "  ldflags = #{conf['ldflags']}\n" if conf['ldflags']
