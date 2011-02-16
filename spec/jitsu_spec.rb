@@ -250,8 +250,8 @@ EOS
         # the targets are reversed on 1.8.7 :p
         if RUBY_VERSION.start_with? '1.8'
           ninjafile += <<-EOS
-build aaa3.o: ltcxx aaa3.cpp
-build aaa3.la: ltlink aaa3.o
+build aaa3.lo: ltcxx aaa3.cpp
+build aaa3.la: ltlink aaa3.lo
 
 build aaa2.o: cxx aaa2.cpp
   cxxflags = -ansi -pedantic
@@ -273,8 +273,8 @@ build aaa2.o: cxx aaa2.cpp
   cxxflags = -ansi -pedantic
 build aaa2.a: archive aaa2.o
 
-build aaa3.o: ltcxx aaa3.cpp
-build aaa3.la: ltlink aaa3.o
+build aaa3.lo: ltcxx aaa3.cpp
+build aaa3.la: ltlink aaa3.lo
 
 build all: phony || aaa1 aaa2.a aaa3.la
 EOS
