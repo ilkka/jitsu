@@ -124,7 +124,9 @@ EOS
   # @param targets [Hash] all targets for the build
   def self.handle_executable(out, target, sources, objects, conf, targets)
     output_sources(out, sources, conf)
-    libtool = libtool_needed_for targets.select { |key,val| conf['dependencies'].include? key }
+    libtool = libtool_needed_for targets.select { |key,val|
+      conf['dependencies'] and conf['dependencies'].include? key
+    }
     rule = libtool ? "ltlink" : "link"
     out.write "build #{target}: #{rule} #{objects}"
     out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
