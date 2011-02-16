@@ -37,12 +37,13 @@ end
 RSpec::Core::RakeTask.new(:rcov) do |spec|
   spec.pattern = 'spec/**/*_spec.rb'
   spec.rcov = true
+  spec.rcov_opts = "-x '^[\/]'"
 end
 
 require 'cucumber/rake/task'
 Cucumber::Rake::Task.new(:features)
 
-task :default => :spec
+task :default => [:spec, :features]
 
 require 'yard'
 yardtask = YARD::Rake::YardocTask.new
