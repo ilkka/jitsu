@@ -203,4 +203,21 @@ EOS
   def self.sources_to_objects(srcs)
     srcs.map { |src| source_to_object src }
   end
+
+  # Convert sourcefile name to corresponding libtool object file name.
+  #
+  # @param src [String] source file path.
+  # @return [String] libtool object file path.
+  def self.source_to_ltobject(src)
+    src.gsub /\.[Cc]\w+$/, '.lo'
+  end
+
+  # Convert a list of sourcefile names to corresponding libtool object file
+  # names.
+  #
+  # @param srcs [Enumerable] source file paths.
+  # @return [Enumerable] libtool object file paths.
+  def self.sources_to_ltobjects(srcs)
+    srcs.map { |src| source_to_ltobject src }
+  end
 end
