@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{jitsu}
-  s.version = "0.2.0"
+  s.version = "0.2.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ilkka Laukkanen"]
-  s.date = %q{2011-02-15}
+  s.date = %q{2011-02-16}
   s.default_executable = %q{jitsu}
   s.description = %q{Jitsu is a frontend or meta build system for Ninja
 (http://github.com/martine/ninja), a lightning-fast but
