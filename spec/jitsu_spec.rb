@@ -261,7 +261,7 @@ build aaa1a.o: cxx aaa1a.cpp
 build aaa1b.o: cxx aaa1b.cpp
 build aaa1: ltlink aaa1a.o aaa1b.o aaa2.a aaa3.la
 
-build all: phony || aaa3.so aaa2.a aaa1
+build all: phony || aaa3.la aaa2.a aaa1
 EOS
         else
           ninjafile += <<-EOS
@@ -276,7 +276,7 @@ build aaa2.a: archive aaa2.o
 build aaa3.o: ltcxx aaa3.cpp
 build aaa3.la: ltlink aaa3.o
 
-build all: phony || aaa1 aaa2.a aaa3.so
+build all: phony || aaa1 aaa2.a aaa3.la
 EOS
         end
         File.open('build.ninja', 'r').read.should == ninjafile
