@@ -158,6 +158,6 @@ Feature: Build C++ programs
       """
     When I run jitsu
     And I run "ninja all"
-    And I run "env LD_PRELOAD=./lib.so ./blah"
+    And I run "libtool --mode=execute ./blah"
     Then the output should be "Hello World" with a newline
 
