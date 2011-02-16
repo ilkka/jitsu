@@ -252,6 +252,7 @@ EOS
           ninjafile += <<-EOS
 build aaa3.lo: ltcxx aaa3.cpp
 build aaa3.la: ltlink aaa3.lo
+  ldflags = ${ldflags} -rpath /usr/local/lib
 
 build aaa2.o: cxx aaa2.cpp
   cxxflags = -ansi -pedantic
@@ -275,6 +276,7 @@ build aaa2.a: archive aaa2.o
 
 build aaa3.lo: ltcxx aaa3.cpp
 build aaa3.la: ltlink aaa3.lo
+  ldflags = ${ldflags} -rpath /usr/local/lib
 
 build all: phony || aaa1 aaa2.a aaa3.la
 EOS
