@@ -113,3 +113,51 @@ Feature: Build C++ programs
     And I run "ninja all"
     And I run "env LD_PRELOAD=./lib.so ./blah"
     Then the output should be "Hello World" with a newline
+
+  Scenario: Build an executable using libtool
+    Given a directory
+    And a file "lib.h" with contents
+      """
+      #include <string>
+
+      std::string greeting();
+      """
+    And a file "lib.cpp" with contents
+      """
+      #include "lib.h"
+
+      std::string greeting() {
+        return std::string("Hello World");
+      }
+      """
+    And a file "main.cpp" with contents
+      """
+      #include <iostream>
+      
+      extern std::string greeting();
+
+      int main(int argc, char* argv[]) {
+        std::cout << greeting() << std::endl;
+        return 0;
+      }
+      """
+    And a file "build.jitsu" with contents
+      """
+      ---
+      targets:
+        lib.la:
+          type: libtool_library
+          sources:
+            - lib.cpp
+        blah:
+          type: executable
+          sources:
+            - main.cpp
+          dependencies:
+            - lib.la
+      """
+    When I run jitsu
+    And I run "ninja all"
+    And I run "env LD_PRELOAD=./lib.so ./blah"
+    Then the output should be "Hello World" with a newline
+
