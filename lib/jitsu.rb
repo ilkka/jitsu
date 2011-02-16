@@ -106,8 +106,9 @@ EOS
   # @param conf [Hash] the entire build spec hash for this target.
   def self.output_sources(out, sources, conf)
     cxxflags = conf['cxxflags']
+    rule = (conf['type'] == 'libtool_library' ? "ltcxx" : "cxx")
     sources.each do |src|
-      out.write "build #{source_to_object src}: cxx #{src}\n"
+      out.write "build #{source_to_object src}: #{rule} #{src}\n"
       out.write "  cxxflags = #{cxxflags}\n" if cxxflags
     end
   end
