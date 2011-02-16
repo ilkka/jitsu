@@ -161,3 +161,14 @@ Feature: Build C++ programs
     And I run "libtool --mode=execute ./blah"
     Then the output should be "Hello World" with a newline
 
+  Scenario: Try to run on invalid build.jitsu file
+    Given a directory
+    And a file "build.jitsu" with contents
+    """
+    ---
+    blah:
+      type: executable
+      sources:
+        - main.cpp
+    """
+    Then running jitsu should produce an error
