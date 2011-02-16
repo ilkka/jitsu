@@ -49,12 +49,18 @@ module Jitsu
   # @return nil
   def self.output(data)
     File.open NINJA_FILE_NAME, 'w' do |f|
+      libtool = libtool_needed_for data['targets']
       f.write <<-EOS
 cxxflags =
 ldflags =
 cxx = g++
 ld = g++
 ar = ar
+EOS
+      if libtool
+        f.write "libtool = libtool\n"
+      end
+      f.write <<-EOS
 
 rule cxx
   description = CC ${in}
@@ -69,6 +75,19 @@ rule archive
   description = AR ${out}
   command = ${ar} rT ${out} ${in}
 EOS
+      if libtool_needed_for data['targets']
+        f.write <<-EOS
+
+rule ltcxx
+  description = CC ${in}
+  depfile = ${out}.d
+  command = ${libtool} --mode=compile ${cxx} -MMD -MF ${out}.d ${cxxflags} -c ${in}
+
+rule ltlink
+  description = LD ${out}
+  command = ${libtool} --mode=link ${ld} ${ldflags} -o ${out} ${in}
+EOS
+      end
       data['targets'].each do |target,conf|
         f.write "\n"
         sources = conf['sources']
