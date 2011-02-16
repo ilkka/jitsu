@@ -159,11 +159,58 @@ Feature: Build C++ programs
     And I run &quot;ninja all&quot;
     And I run &quot;env LD_PRELOAD=./lib.so ./blah&quot;
     Then the output should be &quot;Hello World&quot; with a newline
+
+  Scenario: Build an executable using libtool
+    Given a directory
+    And a file &quot;lib.h&quot; with contents
+      &quot;&quot;&quot;
+      #include &lt;string&gt;
+
+      std::string greeting();
+      &quot;&quot;&quot;
+    And a file &quot;lib.cpp&quot; with contents
+      &quot;&quot;&quot;
+      #include &quot;lib.h&quot;
+
+      std::string greeting() {
+        return std::string(&quot;Hello World&quot;);
+      }
+      &quot;&quot;&quot;
+    And a file &quot;main.cpp&quot; with contents
+      &quot;&quot;&quot;
+      #include &lt;iostream&gt;
+      
+      extern std::string greeting();
+
+      int main(int argc, char* argv[]) {
+        std::cout &lt;&lt; greeting() &lt;&lt; std::endl;
+        return 0;
+      }
+      &quot;&quot;&quot;
+    And a file &quot;build.jitsu&quot; with contents
+      &quot;&quot;&quot;
+      ---
+      targets:
+        lib.la:
+          type: libtool_library
+          sources:
+            * lib.cpp
+        blah:
+          type: executable
+          sources:
+            * main.cpp
+          dependencies:
+            * lib.la
+      &quot;&quot;&quot;
+    When I run jitsu
+    And I run &quot;ninja all&quot;
+    And I run &quot;libtool --mode=execute ./blah&quot;
+    Then the output should be &quot;Hello World&quot; with a newline
 </pre>
 </div></div>
     
     <div id="footer">
-  Generated on Tue Feb 15 16:21:48 2011 by 
+  Generated on Wed Feb 16 13:40:31 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.6.4 (ruby-1.9.2).
 </div>
