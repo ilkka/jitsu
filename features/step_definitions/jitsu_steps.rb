@@ -32,3 +32,7 @@ Then /^the output should be "([^"]*)" with a newline$/ do |desired|
   @output.should == desired + "\n"
 end
 
+Then /^running jitsu should produce an error$/ do
+    pending # express the regexp above with the code you wish you had
+end
+
