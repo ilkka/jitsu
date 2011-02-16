@@ -35,18 +35,32 @@ module Jitsu
     YAML.load(File.open(jitsufile, 'r').read)
   end
 
+  # Check if any of the targets needs libtool.
+  #
+  # @param targets [Enum] the targets from a build specification hash.
+  # @return [Boolean] true if libtool required, nil otherwise.
+  def self.libtool_needed_for(targets)
+    not targets.select { |key,val| val['type'] == 'libtool_library' }.empty?
+  end
+
   # Output jitsu build specification as build.ninja file(s).
   #
   # @param data [Hash] a build specification from e.g. Jitsu::read.
   # @return nil
   def self.output(data)
     File.open NINJA_FILE_NAME, 'w' do |f|
+      libtool = libtool_needed_for data['targets']
       f.write <<-EOS
 cxxflags =
 ldflags =
 cxx = g++
 ld = g++
 ar = ar
+EOS
+      if libtool
+        f.write "libtool = libtool\n"
+      end
+      f.write <<-EOS
 
 rule cxx
   description = CC ${in}
@@ -61,11 +75,23 @@ rule archive
   description = AR ${out}
   command = ${ar} rT ${out} ${in}
 EOS
+      if libtool_needed_for data['targets']
+        f.write <<-EOS
+
+rule ltcxx
+  description = CC ${in}
+  depfile = ${out}.d
+  command = ${libtool} --quiet --mode=compile ${cxx} -MMD -MF ${out}.d ${cxxflags} -c ${in}
+
+rule ltlink
+  description = LD ${out}
+  command = ${libtool} --quiet --mode=link ${ld} ${ldflags} -o ${out} ${in}
+EOS
+      end
       data['targets'].each do |target,conf|
         f.write "\n"
         sources = conf['sources']
-        objects = sources_to_objects(sources).join(' ')
-        Jitsu.send "handle_#{conf['type']}".to_sym, f, target, sources, objects, conf
+        Jitsu.send "handle_#{conf['type']}".to_sym, f, target, sources, conf, data['targets']
       end
       f.write("\nbuild all: phony || #{data['targets'].keys.join(' ')}\n")
     end
@@ -79,8 +105,11 @@ EOS
   # @param conf [Hash] the entire build spec hash for this target.
   def self.output_sources(out, sources, conf)
     cxxflags = conf['cxxflags']
+    libtool = conf['type'] == 'libtool_library'
+    rule = (libtool ? "ltcxx" : "cxx")
     sources.each do |src|
-      out.write "build #{source_to_object src}: cxx #{src}\n"
+      object = (libtool ? source_to_ltobject(src) : source_to_object(src))
+      out.write "build #{object}: #{rule} #{src}\n"
       out.write "  cxxflags = #{cxxflags}\n" if cxxflags
     end
   end
@@ -91,11 +120,15 @@ EOS
   # @param target [String] the filename of the target.
   # @param sources [Enumerable] a list of sourcefile names to output rules
   # for.
-  # @param objects [Enumerable] a list of all object files for the target.
   # @param conf [Hash] the entire build spec hash for this target.
-  def self.handle_executable(out, target, sources, objects, conf)
+  # @param targets [Hash] all targets for the build
+  def self.handle_executable(out, target, sources, conf, targets)
     output_sources(out, sources, conf)
-    out.write "build #{target}: link #{objects}"
+    libtool = libtool_needed_for targets.select { |key,val|
+      conf['dependencies'] and conf['dependencies'].include? key
+    }
+    rule = libtool ? "ltlink" : "link"
+    out.write "build #{target}: #{rule} #{sources_to_objects(sources).join ' '}"
     out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
     out.write "\n"
     out.write "  ldflags = #{conf['ldflags']}\n" if conf['ldflags']
@@ -107,11 +140,11 @@ EOS
   # @param target [String] the filename of the target.
   # @param sources [Enumerable] a list of sourcefile names to output rules
   # for.
-  # @param objects [Enumerable] a list of all object files for the target.
   # @param conf [Hash] the entire build spec hash for this target.
-  def self.handle_static_library(out, target, sources, objects, conf)
+  # @param targets [Hash] all targets for the build
+  def self.handle_static_library(out, target, sources, conf, targets)
     output_sources(out, sources, conf)
-    out.write "build #{target}: archive #{objects}"
+    out.write "build #{target}: archive #{sources_to_objects(sources).join ' '}"
     out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
     out.write "\n"
   end
@@ -122,17 +155,35 @@ EOS
   # @param target [String] the filename of the target.
   # @param sources [Enumerable] a list of sourcefile names to output rules
   # for.
-  # @param objects [Enumerable] a list of all object files for the target.
   # @param conf [Hash] the entire build spec hash for this target.
-  def self.handle_dynamic_library(out, target, sources, objects, conf)
+  # @param targets [Hash] all targets for the build
+  def self.handle_dynamic_library(out, target, sources, conf, targets)
     conf['cxxflags'] ||= '${cxxflags}'
     conf['cxxflags'] += ' -fPIC'
     output_sources(out, sources, conf)
-    out.write "build #{target}: link #{objects}"
+    out.write "build #{target}: link #{sources_to_objects(sources).join ' '}"
     out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
     out.write "\n"
     conf['ldflags'] ||= '${ldflags}'
     conf['ldflags'] += " -shared -Wl,-soname,#{target}"
+    out.write "  ldflags = #{conf['ldflags']}\n"
+  end
+
+  # Output build rules for one libtool library target.
+  #
+  # @param out [IO] the output stream where output is written.
+  # @param target [String] the filename of the target.
+  # @param sources [Enumerable] a list of sourcefile names to output rules
+  # for.
+  # @param conf [Hash] the entire build spec hash for this target.
+  # @param targets [Hash] all targets for the build
+  def self.handle_libtool_library(out, target, sources, conf, targets)
+    output_sources(out, sources, conf)
+    out.write "build #{target}: ltlink #{sources_to_ltobjects(sources).join ' '}"
+    out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
+    out.write "\n"
+    conf['ldflags'] ||= '${ldflags}'
+    conf['ldflags'] += " -rpath /usr/local/lib"
     out.write "  ldflags = #{conf['ldflags']}\n"
   end
 
@@ -150,5 +201,22 @@ EOS
   # @return [Enumerable] object file paths.
   def self.sources_to_objects(srcs)
     srcs.map { |src| source_to_object src }
+  end
+
+  # Convert sourcefile name to corresponding libtool object file name.
+  #
+  # @param src [String] source file path.
+  # @return [String] libtool object file path.
+  def self.source_to_ltobject(src)
+    src.gsub /\.[Cc]\w+$/, '.lo'
+  end
+
+  # Convert a list of sourcefile names to corresponding libtool object file
+  # names.
+  #
+  # @param srcs [Enumerable] source file paths.
+  # @return [Enumerable] libtool object file paths.
+  def self.sources_to_ltobjects(srcs)
+    srcs.map { |src| source_to_ltobject src }
   end
 end

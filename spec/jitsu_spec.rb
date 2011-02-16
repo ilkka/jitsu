@@ -186,4 +186,103 @@ EOS
       end
     end
   end
+
+  it "outputs a build.jitsu file with libtool" do
+    Dir.mktmpdir do |dir|
+      Dir.chdir dir do |dir|
+        File.open 'build.jitsu', 'w' do |f|
+          f.write <<-EOS
+---
+targets:
+  aaa1:
+    type: executable
+    sources:
+      - aaa1a.cpp
+      - aaa1b.cpp
+    dependencies:
+      - aaa2.a
+      - aaa3.la
+  aaa2.a:
+    type: static_library
+    sources: 
+      - aaa2.cpp
+    cxxflags: -ansi -pedantic
+  aaa3.la:
+    type: libtool_library
+    sources:
+      - aaa3.cpp
+EOS
+        end
+        data = Jitsu.read Jitsu.jitsufile
+        Jitsu.output data
+        Dir['build.ninja'].length.should == 1
+        ninjafile = <<-EOS
+cxxflags =
+ldflags =
+cxx = g++
+ld = g++
+ar = ar
+libtool = libtool
+
+rule cxx
+  description = CC ${in}
+  depfile = ${out}.d
+  command = ${cxx} -MMD -MF ${out}.d ${cxxflags} -c ${in} -o ${out}
+
+rule link
+  description = LD ${out}
+  command = ${ld} ${ldflags} -o ${out} ${in}
+
+rule archive
+  description = AR ${out}
+  command = ${ar} rT ${out} ${in}
+
+rule ltcxx
+  description = CC ${in}
+  depfile = ${out}.d
+  command = ${libtool} --quiet --mode=compile ${cxx} -MMD -MF ${out}.d ${cxxflags} -c ${in}
+
+rule ltlink
+  description = LD ${out}
+  command = ${libtool} --quiet --mode=link ${ld} ${ldflags} -o ${out} ${in}
+
+EOS
+        # the targets are reversed on 1.8.7 :p
+        if RUBY_VERSION.start_with? '1.8'
+          ninjafile += <<-EOS
+build aaa3.lo: ltcxx aaa3.cpp
+build aaa3.la: ltlink aaa3.lo
+  ldflags = ${ldflags} -rpath /usr/local/lib
+
+build aaa2.o: cxx aaa2.cpp
+  cxxflags = -ansi -pedantic
+build aaa2.a: archive aaa2.o
+
+build aaa1a.o: cxx aaa1a.cpp
+build aaa1b.o: cxx aaa1b.cpp
+build aaa1: ltlink aaa1a.o aaa1b.o aaa2.a aaa3.la
+
+build all: phony || aaa3.la aaa2.a aaa1
+EOS
+        else
+          ninjafile += <<-EOS
+build aaa1a.o: cxx aaa1a.cpp
+build aaa1b.o: cxx aaa1b.cpp
+build aaa1: ltlink aaa1a.o aaa1b.o aaa2.a aaa3.la
+
+build aaa2.o: cxx aaa2.cpp
+  cxxflags = -ansi -pedantic
+build aaa2.a: archive aaa2.o
+
+build aaa3.lo: ltcxx aaa3.cpp
+build aaa3.la: ltlink aaa3.lo
+  ldflags = ${ldflags} -rpath /usr/local/lib
+
+build all: phony || aaa1 aaa2.a aaa3.la
+EOS
+        end
+        File.open('build.ninja', 'r').read.should == ninjafile
+      end
+    end
+  end
 end
