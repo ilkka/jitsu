@@ -182,7 +182,9 @@ EOS
     out.write "build #{target}: ltlink #{sources_to_ltobjects(sources).join ' '}"
     out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
     out.write "\n"
-    out.write "  ldflags = #{conf['ldflags']}\n" if conf['ldflags']
+    conf['ldflags'] ||= '${ldflags}'
+    conf['ldflags'] += " -rpath /usr/local/lib"
+    out.write "  ldflags = #{conf['ldflags']}\n"
   end
 
   # Convert sourcefile name to corresponding object file name.
