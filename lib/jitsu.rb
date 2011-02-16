@@ -164,6 +164,22 @@ EOS
     out.write "  ldflags = #{conf['ldflags']}\n"
   end
 
+  # Output build rules for one libtool library target.
+  #
+  # @param out [IO] the output stream where output is written.
+  # @param target [String] the filename of the target.
+  # @param sources [Enumerable] a list of sourcefile names to output rules
+  # for.
+  # @param objects [Enumerable] a list of all object files for the target.
+  # @param conf [Hash] the entire build spec hash for this target.
+  def self.handle_libtool_library(out, target, sources, objects, conf)
+    output_sources(out, sources, conf)
+    out.write "build #{target}: ltlink #{objects}"
+    out.write " #{conf['dependencies'].join(' ')}" if conf['dependencies']
+    out.write "\n"
+    out.write "  ldflags = #{conf['ldflags']}\n" if conf['ldflags']
+  end
+
   # Convert sourcefile name to corresponding object file name.
   #
   # @param src [String] source file path.
