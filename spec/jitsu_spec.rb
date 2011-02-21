@@ -116,7 +116,7 @@ targets:
     sources: 
       - aaa2.cpp
     cxxflags: -ansi -pedantic
-  aaa3.so:
+  - name: aaa3.so
     type: dynamic_library
     sources:
       - aaa3.cpp
