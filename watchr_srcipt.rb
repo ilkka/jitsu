@@ -6,7 +6,7 @@ def run_features
   system("rake features")
 end
 
-watch('(lib|bin|spec|features)/(.*\.rb|[^.])') do |md|
-  run_specs && run_features
-end
+watch('spec/.*\.rb$') {|md| run_specs}
+watch('features/.*\.(feature|rb)$') {|md| run_features}
+watch('(bin/jitsu|lib/.*\.(rb|yaml)$)') {|md| run_specs && run_features}
 

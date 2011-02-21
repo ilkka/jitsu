@@ -17,6 +17,7 @@ GEM
       git (>= 1.2.5)
       rake
     json (1.4.6)
+    kwalify (0.7.2)
     rake (0.8.7)
     rcov (0.9.9)
     rspec (2.3.0)
@@ -38,6 +39,7 @@ DEPENDENCIES
   bundler (~> 1.0.0)
   cucumber
   jeweler (~> 1.5.2)
+  kwalify (~> 0.7.2)
   rcov
   rspec (~> 2.3.0)
   trollop (~> 1.16.2)

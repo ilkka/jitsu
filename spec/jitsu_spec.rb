@@ -52,13 +52,14 @@ describe "Jitsu" do
           f.write <<-EOS
 ---
 targets:
-  test1:
+  - name: test1
     type: executable
-    sources: test1.cpp
+    sources:
+      - test1.cpp
     cxxflags: -g -Wall
     dependencies:
       - test2
-  test2:
+  - name: test2
     type: static_library
     sources:
       - test2.cpp
@@ -66,7 +67,7 @@ targets:
 EOS
         end
         data = Jitsu.read Jitsu.jitsufile
-        data['targets'].keys.should == ['test1', 'test2']
+        data['targets'].map { |x| x['name'] }.should == ['test1', 'test2']
       end
     end
     Dir.mktmpdir do |dir|
@@ -75,7 +76,7 @@ EOS
           f.write <<-EOS
 ---
 targets:
-  aaa1:
+  - name: aaa1
     type: executable
     sources:
       - aaa1a.cpp
@@ -83,7 +84,7 @@ targets:
     cxxflags: -g -Wall
     dependencies:
       - aaa2
-  aaa2:
+  - name: aaa2
     type: dynamic_library
     sources:
       - aaa2.cpp
@@ -91,7 +92,7 @@ targets:
 EOS
         end
         data = Jitsu.read Jitsu.jitsufile
-        data['targets'].keys.should == ['aaa1', 'aaa2']
+        data['targets'].map { |x| x['name'] }.should == ['aaa1', 'aaa2']
       end
     end
   end
@@ -103,7 +104,7 @@ EOS
           f.write <<-EOS
 ---
 targets:
-  aaa1:
+  - name: aaa1
     type: executable
     sources:
       - aaa1a.cpp
@@ -111,12 +112,12 @@ targets:
     dependencies:
       - aaa2.a
       - aaa3.so
-  aaa2.a:
+  - name: aaa2.a
     type: static_library
     sources: 
       - aaa2.cpp
     cxxflags: -ansi -pedantic
-  aaa3.so:
+  - name: aaa3.so
     type: dynamic_library
     sources:
       - aaa3.cpp
@@ -194,7 +195,7 @@ EOS
           f.write <<-EOS
 ---
 targets:
-  aaa1:
+  - name: aaa1
     type: executable
     sources:
       - aaa1a.cpp
@@ -202,12 +203,12 @@ targets:
     dependencies:
       - aaa2.a
       - aaa3.la
-  aaa2.a:
+  - name: aaa2.a
     type: static_library
     sources: 
       - aaa2.cpp
     cxxflags: -ansi -pedantic
-  aaa3.la:
+  - name: aaa3.la
     type: libtool_library
     sources:
       - aaa3.cpp

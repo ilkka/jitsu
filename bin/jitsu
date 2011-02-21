@@ -38,5 +38,9 @@ if not Jitsu.jitsufile
   exit 2
 end
 
-Jitsu.output(Jitsu.read(Jitsu.jitsufile))
-
+begin
+  Jitsu.work
+rescue Jitsu::JitsuError
+  warn $!
+  exit 3
+end
