@@ -207,7 +207,7 @@ targets:
     sources: 
       - aaa2.cpp
     cxxflags: -ansi -pedantic
-  aaa3.la:
+  - name: aaa3.la
     type: libtool_library
     sources:
       - aaa3.cpp
