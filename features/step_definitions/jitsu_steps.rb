@@ -15,7 +15,7 @@ end
 
 When /^I run jitsu$/ do
   Dir.chdir @tmpdir do |dir|
-    Jitsu.output(Jitsu.read(Jitsu.jitsufile))
+    Jitsu.work
   end
 end
 
