@@ -146,27 +146,6 @@ rule archive
   description = AR ${out}
   command = ${ar} rT ${out} ${in}
 
-EOS
-        # the targets are reversed on 1.8.7 :p
-        if RUBY_VERSION.start_with? '1.8'
-          ninjafile += <<-EOS
-build aaa3.o: cxx aaa3.cpp
-  cxxflags = ${cxxflags} -fPIC
-build aaa3.so: link aaa3.o
-  ldflags = ${ldflags} -shared -Wl,-soname,aaa3.so
-
-build aaa2.o: cxx aaa2.cpp
-  cxxflags = -ansi -pedantic
-build aaa2.a: archive aaa2.o
-
-build aaa1a.o: cxx aaa1a.cpp
-build aaa1b.o: cxx aaa1b.cpp
-build aaa1: link aaa1a.o aaa1b.o aaa2.a aaa3.so
-
-build all: phony || aaa3.so aaa2.a aaa1
-EOS
-        else
-          ninjafile += <<-EOS
 build aaa1a.o: cxx aaa1a.cpp
 build aaa1b.o: cxx aaa1b.cpp
 build aaa1: link aaa1a.o aaa1b.o aaa2.a aaa3.so
@@ -182,7 +161,6 @@ build aaa3.so: link aaa3.o
 
 build all: phony || aaa1 aaa2.a aaa3.so
 EOS
-        end
         File.open('build.ninja', 'r').read.should == ninjafile
       end
     end
@@ -247,26 +225,6 @@ rule ltlink
   description = LD ${out}
   command = ${libtool} --quiet --mode=link ${ld} ${ldflags} -o ${out} ${in}
 
-EOS
-        # the targets are reversed on 1.8.7 :p
-        if RUBY_VERSION.start_with? '1.8'
-          ninjafile += <<-EOS
-build aaa3.lo: ltcxx aaa3.cpp
-build aaa3.la: ltlink aaa3.lo
-  ldflags = ${ldflags} -rpath /usr/local/lib
-
-build aaa2.o: cxx aaa2.cpp
-  cxxflags = -ansi -pedantic
-build aaa2.a: archive aaa2.o
-
-build aaa1a.o: cxx aaa1a.cpp
-build aaa1b.o: cxx aaa1b.cpp
-build aaa1: ltlink aaa1a.o aaa1b.o aaa2.a aaa3.la
-
-build all: phony || aaa3.la aaa2.a aaa1
-EOS
-        else
-          ninjafile += <<-EOS
 build aaa1a.o: cxx aaa1a.cpp
 build aaa1b.o: cxx aaa1b.cpp
 build aaa1: ltlink aaa1a.o aaa1b.o aaa2.a aaa3.la
@@ -281,7 +239,6 @@ build aaa3.la: ltlink aaa3.lo
 
 build all: phony || aaa1 aaa2.a aaa3.la
 EOS
-        end
         File.open('build.ninja', 'r').read.should == ninjafile
       end
     end
