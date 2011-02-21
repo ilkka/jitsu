@@ -1,5 +1,11 @@
 require 'yaml'
 
+# Main Jitsu module.
+#
+# Usage:
+#
+#   Dir.chdir 'directory-with-jitsufiles'
+#   Jitsu.work
 module Jitsu
   JITSU_FILE_NAME = 'build.jitsu'
   NINJA_FILE_NAME = 'build.ninja'
