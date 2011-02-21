@@ -18,7 +18,7 @@ Feature: Build C++ programs
       """
       ---
       targets:
-        target:
+      - name: target
           type: executable
           sources:
             - main.cpp
@@ -51,13 +51,13 @@ Feature: Build C++ programs
       """
       ---
       targets:
-        hello:
+        - name: hello
           type: executable
           sources:
             - main.cpp
           dependencies:
             - lib.a
-        lib.a:
+        - name: lib.a
           type: static_library
           sources:
             - lib.cpp
@@ -98,11 +98,11 @@ Feature: Build C++ programs
       """
       ---
       targets:
-        lib.so:
+        - name: lib.so
           type: dynamic_library
           sources:
             - lib.cpp
-        blah:
+        - name: blah
           type: executable
           sources:
             - main.cpp
@@ -145,11 +145,11 @@ Feature: Build C++ programs
       """
       ---
       targets:
-        lib.la:
+        - name: lib.la
           type: libtool_library
           sources:
             - lib.cpp
-        blah:
+        - name: blah
           type: executable
           sources:
             - main.cpp

@@ -52,13 +52,13 @@ describe "Jitsu" do
           f.write <<-EOS
 ---
 targets:
-  test1:
+  - name: test1
     type: executable
     sources: test1.cpp
     cxxflags: -g -Wall
     dependencies:
       - test2
-  test2:
+  - name: test2
     type: static_library
     sources:
       - test2.cpp
@@ -75,7 +75,7 @@ EOS
           f.write <<-EOS
 ---
 targets:
-  aaa1:
+  - name: aaa1
     type: executable
     sources:
       - aaa1a.cpp
@@ -83,7 +83,7 @@ targets:
     cxxflags: -g -Wall
     dependencies:
       - aaa2
-  aaa2:
+  - name: aaa2
     type: dynamic_library
     sources:
       - aaa2.cpp
@@ -103,7 +103,7 @@ EOS
           f.write <<-EOS
 ---
 targets:
-  aaa1:
+  - name: aaa1
     type: executable
     sources:
       - aaa1a.cpp
@@ -111,7 +111,7 @@ targets:
     dependencies:
       - aaa2.a
       - aaa3.so
-  aaa2.a:
+  - name: aaa2.a
     type: static_library
     sources: 
       - aaa2.cpp
@@ -194,7 +194,7 @@ EOS
           f.write <<-EOS
 ---
 targets:
-  aaa1:
+  - name: aaa1
     type: executable
     sources:
       - aaa1a.cpp
@@ -202,7 +202,7 @@ targets:
     dependencies:
       - aaa2.a
       - aaa3.la
-  aaa2.a:
+  - name: aaa2.a
     type: static_library
     sources: 
       - aaa2.cpp
