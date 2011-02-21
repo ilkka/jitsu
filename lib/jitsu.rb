@@ -52,7 +52,7 @@ module Jitsu
     parser = Kwalify::Yaml::Parser.new(validator)
     doc = parser.parse(File.read(jitsufile))
     if parser.errors and not parser.errors.empty?
-      raise Jitsu::SyntaxError.new("Syntax errors in #{jitsufile}", parser.errors)
+      raise Jitsu::SyntaxError.new(jitsufile, "Syntax errors in Jitsufile", parser.errors)
     end
     doc
   end
