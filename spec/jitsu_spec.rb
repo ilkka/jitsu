@@ -54,7 +54,8 @@ describe "Jitsu" do
 targets:
   - name: test1
     type: executable
-    sources: test1.cpp
+    sources:
+      - test1.cpp
     cxxflags: -g -Wall
     dependencies:
       - test2
