@@ -15,7 +15,7 @@ end
 
 When /^I run jitsu$/ do
   Dir.chdir @tmpdir do |dir|
-    Jitsu.output(Jitsu.read(Jitsu.jitsufile))
+    Jitsu.work
   end
 end
 
@@ -30,5 +30,11 @@ end
 
 Then /^the output should be "([^"]*)" with a newline$/ do |desired|
   @output.should == desired + "\n"
+end
+
+Then /^running jitsu should produce an error$/ do
+  Dir.chdir @tmpdir do |dir|
+    expect { Jitsu.work }.to raise_error(Jitsu::SyntaxError)
+  end
 end
 

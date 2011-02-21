@@ -52,13 +52,14 @@ describe "Jitsu" do
           f.write <<-EOS
 ---
 targets:
-  test1:
+  - name: test1
     type: executable
-    sources: test1.cpp
+    sources:
+      - test1.cpp
     cxxflags: -g -Wall
     dependencies:
       - test2
-  test2:
+  - name: test2
     type: static_library
     sources:
       - test2.cpp
@@ -66,7 +67,7 @@ targets:
 EOS
         end
         data = Jitsu.read Jitsu.jitsufile
-        data['targets'].keys.should == ['test1', 'test2']
+        data['targets'].map { |x| x['name'] }.should == ['test1', 'test2']
       end
     end
     Dir.mktmpdir do |dir|
@@ -75,7 +76,7 @@ EOS
           f.write <<-EOS
 ---
 targets:
-  aaa1:
+  - name: aaa1
     type: executable
     sources:
       - aaa1a.cpp
@@ -83,7 +84,7 @@ targets:
     cxxflags: -g -Wall
     dependencies:
       - aaa2
-  aaa2:
+  - name: aaa2
     type: dynamic_library
     sources:
       - aaa2.cpp
@@ -91,7 +92,7 @@ targets:
 EOS
         end
         data = Jitsu.read Jitsu.jitsufile
-        data['targets'].keys.should == ['aaa1', 'aaa2']
+        data['targets'].map { |x| x['name'] }.should == ['aaa1', 'aaa2']
       end
     end
   end
@@ -103,7 +104,7 @@ EOS
           f.write <<-EOS
 ---
 targets:
-  aaa1:
+  - name: aaa1
     type: executable
     sources:
       - aaa1a.cpp
@@ -111,12 +112,12 @@ targets:
     dependencies:
       - aaa2.a
       - aaa3.so
-  aaa2.a:
+  - name: aaa2.a
     type: static_library
     sources: 
       - aaa2.cpp
     cxxflags: -ansi -pedantic
-  aaa3.so:
+  - name: aaa3.so
     type: dynamic_library
     sources:
       - aaa3.cpp
@@ -145,27 +146,6 @@ rule archive
   description = AR ${out}
   command = ${ar} rT ${out} ${in}
 
-EOS
-        # the targets are reversed on 1.8.7 :p
-        if RUBY_VERSION.start_with? '1.8'
-          ninjafile += <<-EOS
-build aaa3.o: cxx aaa3.cpp
-  cxxflags = ${cxxflags} -fPIC
-build aaa3.so: link aaa3.o
-  ldflags = ${ldflags} -shared -Wl,-soname,aaa3.so
-
-build aaa2.o: cxx aaa2.cpp
-  cxxflags = -ansi -pedantic
-build aaa2.a: archive aaa2.o
-
-build aaa1a.o: cxx aaa1a.cpp
-build aaa1b.o: cxx aaa1b.cpp
-build aaa1: link aaa1a.o aaa1b.o aaa2.a aaa3.so
-
-build all: phony || aaa3.so aaa2.a aaa1
-EOS
-        else
-          ninjafile += <<-EOS
 build aaa1a.o: cxx aaa1a.cpp
 build aaa1b.o: cxx aaa1b.cpp
 build aaa1: link aaa1a.o aaa1b.o aaa2.a aaa3.so
@@ -181,7 +161,6 @@ build aaa3.so: link aaa3.o
 
 build all: phony || aaa1 aaa2.a aaa3.so
 EOS
-        end
         File.open('build.ninja', 'r').read.should == ninjafile
       end
     end
@@ -194,7 +173,7 @@ EOS
           f.write <<-EOS
 ---
 targets:
-  aaa1:
+  - name: aaa1
     type: executable
     sources:
       - aaa1a.cpp
@@ -202,12 +181,12 @@ targets:
     dependencies:
       - aaa2.a
       - aaa3.la
-  aaa2.a:
+  - name: aaa2.a
     type: static_library
     sources: 
       - aaa2.cpp
     cxxflags: -ansi -pedantic
-  aaa3.la:
+  - name: aaa3.la
     type: libtool_library
     sources:
       - aaa3.cpp
@@ -246,26 +225,6 @@ rule ltlink
   description = LD ${out}
   command = ${libtool} --quiet --mode=link ${ld} ${ldflags} -o ${out} ${in}
 
-EOS
-        # the targets are reversed on 1.8.7 :p
-        if RUBY_VERSION.start_with? '1.8'
-          ninjafile += <<-EOS
-build aaa3.lo: ltcxx aaa3.cpp
-build aaa3.la: ltlink aaa3.lo
-  ldflags = ${ldflags} -rpath /usr/local/lib
-
-build aaa2.o: cxx aaa2.cpp
-  cxxflags = -ansi -pedantic
-build aaa2.a: archive aaa2.o
-
-build aaa1a.o: cxx aaa1a.cpp
-build aaa1b.o: cxx aaa1b.cpp
-build aaa1: ltlink aaa1a.o aaa1b.o aaa2.a aaa3.la
-
-build all: phony || aaa3.la aaa2.a aaa1
-EOS
-        else
-          ninjafile += <<-EOS
 build aaa1a.o: cxx aaa1a.cpp
 build aaa1b.o: cxx aaa1b.cpp
 build aaa1: ltlink aaa1a.o aaa1b.o aaa2.a aaa3.la
@@ -280,7 +239,6 @@ build aaa3.la: ltlink aaa3.lo
 
 build all: phony || aaa1 aaa2.a aaa3.la
 EOS
-        end
         File.open('build.ninja', 'r').read.should == ninjafile
       end
     end
