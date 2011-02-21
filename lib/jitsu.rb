@@ -40,7 +40,7 @@ module Jitsu
   # @param targets [Enum] the targets from a build specification hash.
   # @return [Boolean] true if libtool required, nil otherwise.
   def self.libtool_needed_for(targets)
-    not targets.select { |key,val| val['type'] == 'libtool_library' }.empty?
+    not targets.select { |target| target['type'] == 'libtool_library' }.empty?
   end
 
   # Output jitsu build specification as build.ninja file(s).
