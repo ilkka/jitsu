@@ -93,7 +93,7 @@ EOS
         sources = target['sources']
         Jitsu.send "handle_#{target['type']}".to_sym, f, target, sources, data['targets']
       end
-      f.write("\nbuild all: phony || #{data['targets'].keys.join(' ')}\n")
+      f.write("\nbuild all: phony || #{data['targets'].map { |t| t['name'] }.join(' ')}\n")
     end
   end
 
