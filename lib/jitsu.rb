@@ -10,6 +10,12 @@ module Jitsu
   JITSU_FILE_NAME = 'build.jitsu'
   NINJA_FILE_NAME = 'build.ninja'
 
+  # Process jitsufiles in current directory.
+  #
+  def self.work
+    Jitsu.output(Jitsu.read(Jitsu.jitsufile))
+  end
+
   # Get path to ninja.
   #
   # @return [String] path to `ninja` or nil if ninja was not found.
