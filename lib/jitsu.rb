@@ -1,4 +1,7 @@
 require 'yaml'
+require 'kwalify'
+
+require 'jitsu/errors'
 
 # Main Jitsu module.
 #
@@ -44,7 +47,14 @@ module Jitsu
   # @param jitsufile [String] path to jitsu file from e.g. Jitsu::jitsufile.
   # @return [Hash] a hash of the build specification.
   def self.read(jitsufile)
-    YAML.load(File.open(jitsufile, 'r').read)
+    schema = YAML.load_file(File.join(File.dirname(__FILE__), 'schema.yaml'))
+    validator = Kwalify::Validator.new(schema)
+    parser = Kwalify::Yaml::Parser.new(validator)
+    doc = parser.parse(File.read(jitsufile))
+    if parser.errors and not parser.errors.empty?
+      raise Jitsu::SyntaxError.new("Syntax error", parser.errors)
+    end
+    doc
   end
 
   # Check if any of the targets needs libtool.
