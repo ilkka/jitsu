@@ -18,7 +18,7 @@ Feature: Build C++ programs
       """
       ---
       targets:
-      - name: target
+        - name: target
           type: executable
           sources:
             - main.cpp
