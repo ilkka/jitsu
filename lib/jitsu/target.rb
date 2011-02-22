@@ -36,6 +36,16 @@ module Jitsu
       str
     end
 
+    # Compare target to other target.
+    #
+    # @param other [Target] the other target.
+    # @return [Boolean] true if the targets are the same, false otherwise.
+    def ==(other)
+      [:class, :cxxflags, :ldflags, :type, :source, :name].all? do |attr|
+        other.send(attr) == self.send(attr)
+      end
+    end
+
     private
 
     def set_from_conf(conf, *settings)
