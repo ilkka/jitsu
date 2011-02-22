@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "Target" do
-  it "has a name" do
+  it "takes attributes from constructor arguments" do
     Jitsu::Target.public_instance_methods.should include :name
     t = Jitsu::Target.new(:name => "foo.o",
                           :type => "object",
