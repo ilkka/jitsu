@@ -243,4 +243,30 @@ EOS
       end
     end
   end
+
+  it "outputs a build.jitsu file without duplicated rules" do
+    Dir.mktmpdir do |dir|
+      Dir.chdir dir do |dir|
+        File.open 'build.jitsu', 'w' do |f|
+          f.write <<-EOS
+---
+targets:
+  - name: a
+    type: executable
+    sources:
+      - a.cpp
+      - b.cpp
+  - name: b
+    type: executable
+    sources: 
+      - b.cpp
+      - c.cpp
+EOS
+        end
+        data = Jitsu.read Jitsu.jitsufile
+        Jitsu.output data
+        File.read('build.ninja').scan(/^build b\.o:/).count.should == 1
+      end
+    end
+  end
 end
