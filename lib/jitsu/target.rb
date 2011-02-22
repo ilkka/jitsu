@@ -11,7 +11,16 @@ module Jitsu
     # @param conf [Hash] target configuration as read from the
     # jitsufile.
     def initialize(conf)
-      self.name = (conf[:name] or conf['name'])
+      super()
+      set_from_conf(conf, :name, :type, :source, :objects, :dependencies, :cxxflags, :ldflags)
+    end
+
+    private
+
+    def set_from_conf(conf, *settings)
+      settings.each do |setting|
+        self.send "#{setting.to_s}=", (conf[setting.to_sym] or conf[setting.to_s])
+      end
     end
 
   end
