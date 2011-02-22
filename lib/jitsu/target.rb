@@ -11,7 +11,7 @@ module Jitsu
     # @param conf [Hash] target configuration as read from the
     # jitsufile.
     def initialize(conf)
-      self.name = conf['name']
+      self.name = (conf[:name] or conf['name'])
     end
 
   end
