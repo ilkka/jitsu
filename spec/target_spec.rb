@@ -50,4 +50,18 @@ describe "Target" do
     @t.cxxflags.should == "-Wall -ansi -pedantic"
     @t2.cxxflags.should be_nil
   end
+
+  it "should produce ninja rules when cast to string" do
+    "#{@t}".should == <<-EOS
+build foo.o: cxx foo.cpp
+  cxxflags = -Wall -ansi -pedantic
+EOS
+    "#{@t2}".should == <<-EOS
+build foo.o: cxx foo.cpp
+  cxxflags = -Wall -ansi -pedantic
+
+build foo: link foo.o
+  ldflags = -lbar
+EOS
+  end
 end
