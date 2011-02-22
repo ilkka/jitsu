@@ -15,9 +15,11 @@ describe "Target" do
     t.type.should == "object"
     t.source.should == "foo.cpp"
     t.cxxflags.should == "-Wall -ansi -pedantic"
+    t.ldflags.should be_nil
     t2.name.should == "foo"
     t2.type.should == "executable"
     t2.objects.should == [t]
+    t2.source.should be_nil
     t2.ldflags.should == "-lbar"
   end
 end
