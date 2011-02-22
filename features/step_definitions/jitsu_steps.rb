@@ -38,3 +38,19 @@ Then /^running jitsu should produce an error$/ do
   end
 end
 
+Then /^there should be (\d+) object files in the directory$/ do |count|
+  Dir.chdir @tmpdir do |dir|
+    Dir["*.o"].count.should == count
+  end
+end
+
+Then /^the output of "([^"]*)" should be "([^"]*)" with a newline$/ do |cmd, desired|
+  parts = cmd.split(/ /)
+  Dir.chdir @tmpdir do |dir|
+    parts[0] = File.expand_path(parts[0]) if parts[0].index(/\//)
+    @output = `#{parts.join(' ')}`
+    $?.should == 0
+  end
+  @output.should == desired + "\n"
+end
+
