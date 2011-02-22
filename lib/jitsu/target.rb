@@ -15,6 +15,27 @@ module Jitsu
       set_from_conf(conf, :name, :type, :source, :objects, :dependencies, :cxxflags, :ldflags)
     end
 
+    # Convert to string
+    #
+    # @return [String] ninja rules for building this target.
+    def to_s
+      str = ""
+      str << "build #{name}: "
+      str << case type
+             when "executable", "dynamic_library"
+               "link #{objects.map {|o| o.name}.join ' '}"
+             when "static_library"
+               "archive #{objects.map {|o| o.name}.join ' '}"
+             when "object"
+               "cxx #{source}"
+             end
+      str << " #{dependencies.map {|dep| dep.name}.join(' ')}" if dependencies
+      str << "\n"
+      str << "  cxxflags = " + cxxflags + "\n" if cxxflags
+      str << "  ldflags = " + ldflags + "\n" if ldflags
+      str
+    end
+
     private
 
     def set_from_conf(conf, *settings)
