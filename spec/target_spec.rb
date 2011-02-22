@@ -57,9 +57,6 @@ build foo.o: cxx foo.cpp
   cxxflags = -Wall -ansi -pedantic
 EOS
     "#{@t2}".should == <<-EOS
-build foo.o: cxx foo.cpp
-  cxxflags = -Wall -ansi -pedantic
-
 build foo: link foo.o
   ldflags = -lbar
 EOS
