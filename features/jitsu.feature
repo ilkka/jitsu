@@ -172,3 +172,56 @@ Feature: Build C++ programs
         - main.cpp
     """
     Then running jitsu should produce an error
+
+  Scenario: Build two executables that share some sources and use same flags
+    Given a directory
+    And a file "lib.cpp" with contents
+      """
+      #include "lib.h"
+
+      std::string greeting() {
+        return std::string("Hello World");
+      }
+      """
+    And a file "first.cpp" with contents
+      """
+      #include <iostream>
+      
+      extern std::string greeting();
+
+      int main(int argc, char* argv[]) {
+        std::cout << greeting() << std::endl;
+        return 0;
+      }
+      """
+    And a file "second.cpp" with contents
+      """
+      #include <iostream>
+      
+      extern std::string greeting();
+
+      int main(int argc, char* argv[]) {
+        std::cout << greeting() << std::endl;
+        return 0;
+      }
+      """
+    And a file "build.jitsu" with contents
+      """
+      ---
+      targets:
+        - name: first
+          type: executable
+          sources:
+            - lib.cpp
+            - first.cpp
+        - name: second
+          type: executable
+          sources:
+            - lib.cpp
+            - second.cpp
+      """
+    When I run jitsu
+    And I run "ninja all"
+    Then there should be 3 object files in the directory
+    And the output of "./first" should be "Hello World" with a newline
+    And the output of "./second" should be "Hello World" with a newline
