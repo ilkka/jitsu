@@ -1,6 +1,7 @@
 require 'yaml'
 require 'kwalify'
 
+require 'jitsu/target'
 require 'jitsu/errors'
 
 # Main Jitsu module.
