@@ -33,12 +33,14 @@ module Jitsu
   # @return [String] path to jitsu file or nil if not found.
   def self.jitsufile
     dir = '.'
-    while File.expand_path(File.join(dir, '..')) != File.expand_path(dir) do
+    prev = nil
+    until prev and File.expand_path(prev) == File.expand_path(dir) do
       candidate = Dir[File.join dir, JITSU_FILE_NAME].first
       if candidate and File.readable? candidate
         return candidate.gsub /^\.\//, ''
       end
-      dir = File.join dir, '..'
+      prev = dir
+      dir = File.join(dir, '..')
     end
   end
 
