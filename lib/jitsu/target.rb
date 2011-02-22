@@ -4,7 +4,7 @@ module Jitsu
   #
   class Target
 
-    attr_accessor :name
+    attr_accessor :name, :type, :source, :objects, :dependencies, :cxxflags, :ldflags
 
     # Create a new Target instance.
     #
