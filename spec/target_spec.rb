@@ -61,4 +61,29 @@ build foo: link foo.o
   ldflags = -lbar
 EOS
   end
+
+  it "should be equal to another target with the same conf" do
+    tx = Jitsu::Target.new(:name => "foo.o",
+                           :type => "object",
+                           :source => "foo.cpp",
+                           :cxxflags => "-Wall -ansi -pedantic")
+    @t.should == tx
+  end
+
+  it "should not be equal to another type of target" do
+    @t.should_not == @t2
+  end
+
+  it "should not be equal to a similar target with different flags" do
+    tx = Jitsu::Target.new(:name => "foo.o",
+                           :type => "object",
+                           :source => "foo.cpp",
+                           :cxxflags => "-Wall")
+    @t.should_not == tx
+    ty = Jitsu::Target.new(:name => "foo",
+                           :type => "executable",
+                           :objects => [@t],
+                           :ldflags => "-lbar -lbaz")
+    @t2.should_not == ty
+  end
 end
