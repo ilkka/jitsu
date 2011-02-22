@@ -64,7 +64,7 @@ Feature: Build C++ programs
       &quot;&quot;&quot;
       ---
       targets:
-        target:
+        * name: target
           type: executable
           sources:
             * main.cpp
@@ -97,13 +97,13 @@ Feature: Build C++ programs
       &quot;&quot;&quot;
       ---
       targets:
-        hello:
+        * name: hello
           type: executable
           sources:
             * main.cpp
           dependencies:
             * lib.a
-        lib.a:
+        * name: lib.a
           type: static_library
           sources:
             * lib.cpp
@@ -144,11 +144,11 @@ Feature: Build C++ programs
       &quot;&quot;&quot;
       ---
       targets:
-        lib.so:
+        * name: lib.so
           type: dynamic_library
           sources:
             * lib.cpp
-        blah:
+        * name: blah
           type: executable
           sources:
             * main.cpp
@@ -191,11 +191,11 @@ Feature: Build C++ programs
       &quot;&quot;&quot;
       ---
       targets:
-        lib.la:
+        * name: lib.la
           type: libtool_library
           sources:
             * lib.cpp
-        blah:
+        * name: blah
           type: executable
           sources:
             * main.cpp
@@ -206,11 +206,23 @@ Feature: Build C++ programs
     And I run &quot;ninja all&quot;
     And I run &quot;libtool --mode=execute ./blah&quot;
     Then the output should be &quot;Hello World&quot; with a newline
+
+  Scenario: Try to run on invalid build.jitsu file
+    Given a directory
+    And a file &quot;build.jitsu&quot; with contents
+    &quot;&quot;&quot;
+    ---
+    blah:
+      type: executable
+      sources:
+        * main.cpp
+    &quot;&quot;&quot;
+    Then running jitsu should produce an error
 </pre>
 </div></div>
     
     <div id="footer">
-  Generated on Wed Feb 16 14:12:41 2011 by 
+  Generated on Tue Feb 22 12:24:44 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.6.4 (ruby-1.9.2).
 </div>

@@ -59,11 +59,34 @@
   
   
     <dt class="r1 last">Defined in:</dt>
-    <dd class="r1 last">lib/jitsu.rb</dd>
+    <dd class="r1 last">lib/jitsu.rb<span class="defines">,<br />
+  lib/jitsu/errors.rb</span>
+</dd>
   
 </dl>
 <div class="clear"></div>
 
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+Exception classes for Jitsu module
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><h2>Defined Under Namespace</h2>
+<p class="children">
+   
+    
+   
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="Jitsu/JitsuError.html" title="Jitsu::JitsuError (class)">JitsuError</a></span>, <span class='object_link'><a href="Jitsu/SyntaxError.html" title="Jitsu::SyntaxError (class)">SyntaxError</a></span>
+    
+  
+</p>
 
   <h2>Constant Summary</h2>
   
@@ -95,7 +118,7 @@
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#handle_dynamic_library-class_method" title="handle_dynamic_library (class method)">+ (Object) <strong>handle_dynamic_library</strong>(out, target, sources, conf, targets) </a>
+      <a href="#handle_dynamic_library-class_method" title="handle_dynamic_library (class method)">+ (Object) <strong>handle_dynamic_library</strong>(out, target, sources, targets) </a>
     
 
     
@@ -119,7 +142,7 @@ Output build rules for one dynamic library target.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#handle_executable-class_method" title="handle_executable (class method)">+ (Object) <strong>handle_executable</strong>(out, target, sources, conf, targets) </a>
+      <a href="#handle_executable-class_method" title="handle_executable (class method)">+ (Object) <strong>handle_executable</strong>(out, target, sources, targets) </a>
     
 
     
@@ -143,7 +166,7 @@ Output build rules for one executable target.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#handle_libtool_library-class_method" title="handle_libtool_library (class method)">+ (Object) <strong>handle_libtool_library</strong>(out, target, sources, conf, targets) </a>
+      <a href="#handle_libtool_library-class_method" title="handle_libtool_library (class method)">+ (Object) <strong>handle_libtool_library</strong>(out, target, sources, targets) </a>
     
 
     
@@ -167,7 +190,7 @@ Output build rules for one libtool library target.
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#handle_static_library-class_method" title="handle_static_library (class method)">+ (Object) <strong>handle_static_library</strong>(out, target, sources, conf, targets) </a>
+      <a href="#handle_static_library-class_method" title="handle_static_library (class method)">+ (Object) <strong>handle_static_library</strong>(out, target, sources, targets) </a>
     
 
     
@@ -287,7 +310,7 @@ Output jitsu build specification as build.ninja file(s).
         <li class="public ">
   <span class="summary_signature">
     
-      <a href="#output_sources-class_method" title="output_sources (class method)">+ (Object) <strong>output_sources</strong>(out, sources, conf) </a>
+      <a href="#output_sources-class_method" title="output_sources (class method)">+ (Object) <strong>output_sources</strong>(out, sources, target) </a>
     
 
     
@@ -429,6 +452,30 @@ Convert a list of sourcefile names to corresponding object file names.
 </li>
 
       
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#work-class_method" title="work (class method)">+ (Object) <strong>work</strong> </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Process jitsufiles in current directory.
+</p>
+</div></span>
+  
+</li>
+
+      
     </ul>
   
 
@@ -441,7 +488,7 @@ Convert a list of sourcefile names to corresponding object file names.
       <div class="method_details first">
   <p class="signature first" id="handle_dynamic_library-class_method">
   
-    + (<tt>Object</tt>) <strong>handle_dynamic_library</strong>(out, target, sources, conf, targets) 
+    + (<tt>Object</tt>) <strong>handle_dynamic_library</strong>(out, target, sources, targets) 
   
 
   
@@ -480,7 +527,7 @@ the output stream where output is written.
   
     <li>
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
         <span class='name'>target</span>
@@ -489,7 +536,7 @@ the output stream where output is written.
       
         &mdash;
         <div class='inline'><p>
-the filename of the target.
+the entire build spec hash for this target.
 </p>
 </div>
       
@@ -507,23 +554,6 @@ the filename of the target.
         &mdash;
         <div class='inline'><p>
 a list of sourcefile names to output rules
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-        <span class='name'>conf</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the entire build spec hash for this target.
 </p>
 </div>
       
@@ -554,31 +584,31 @@ all targets for the build
       <pre class="lines">
 
 
-160
-161
-162
-163
-164
-165
-166
-167
-168
-169
-170</pre>
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 160</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 179</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id handle_dynamic_library'>handle_dynamic_library</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id target'>target</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id conf'>conf</span><span class='comma'>,</span> <span class='id targets'>targets</span><span class='rparen'>)</span>
-  <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>cxxflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>${cxxflags}</span><span class='tstring_end'>'</span></span>
-  <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>cxxflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> -fPIC</span><span class='tstring_end'>'</span></span>
-  <span class='id output_sources'>output_sources</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id conf'>conf</span><span class='rparen'>)</span>
-  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>build </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='rbrace'>}</span><span class='tstring_content'>: link </span><span class='embexpr_beg'>#{</span><span class='id sources_to_objects'>sources_to_objects</span><span class='lparen'>(</span><span class='id sources'>sources</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id handle_dynamic_library'>handle_dynamic_library</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id target'>target</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id targets'>targets</span><span class='rparen'>)</span>
+  <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>cxxflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>${cxxflags}</span><span class='tstring_end'>'</span></span>
+  <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>cxxflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> -fPIC</span><span class='tstring_end'>'</span></span>
+  <span class='id output_sources'>output_sources</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id target'>target</span><span class='rparen'>)</span>
+  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>build </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>name</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>: link </span><span class='embexpr_beg'>#{</span><span class='id sources_to_objects'>sources_to_objects</span><span class='lparen'>(</span><span class='id sources'>sources</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
   <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>${ldflags}</span><span class='tstring_end'>'</span></span>
-  <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> -shared -Wl,-soname,</span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  ldflags = </span><span class='embexpr_beg'>#{</span><span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>${ldflags}</span><span class='tstring_end'>'</span></span>
+  <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> -shared -Wl,-soname,</span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>name</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  ldflags = </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -588,7 +618,7 @@ all targets for the build
       <div class="method_details ">
   <p class="signature " id="handle_executable-class_method">
   
-    + (<tt>Object</tt>) <strong>handle_executable</strong>(out, target, sources, conf, targets) 
+    + (<tt>Object</tt>) <strong>handle_executable</strong>(out, target, sources, targets) 
   
 
   
@@ -627,7 +657,7 @@ the output stream where output is written.
   
     <li>
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
         <span class='name'>target</span>
@@ -636,7 +666,7 @@ the output stream where output is written.
       
         &mdash;
         <div class='inline'><p>
-the filename of the target.
+the entire build spec hash for this target.
 </p>
 </div>
       
@@ -654,23 +684,6 @@ the filename of the target.
         &mdash;
         <div class='inline'><p>
 a list of sourcefile names to output rules
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-        <span class='name'>conf</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the entire build spec hash for this target.
 </p>
 </div>
       
@@ -701,31 +714,31 @@ all targets for the build
       <pre class="lines">
 
 
-125
-126
-127
-128
-129
-130
-131
-132
-133
-134
-135</pre>
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 125</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 146</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id handle_executable'>handle_executable</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id target'>target</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id conf'>conf</span><span class='comma'>,</span> <span class='id targets'>targets</span><span class='rparen'>)</span>
-  <span class='id output_sources'>output_sources</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id conf'>conf</span><span class='rparen'>)</span>
-  <span class='id libtool'>libtool</span> <span class='op'>=</span> <span class='id libtool_needed_for'>libtool_needed_for</span> <span class='id targets'>targets</span><span class='period'>.</span><span class='id select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id key'>key</span><span class='comma'>,</span><span class='id val'>val</span><span class='op'>|</span>
-    <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='kw'>and</span> <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id include?'>include?</span> <span class='id key'>key</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id handle_executable'>handle_executable</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id target'>target</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id targets'>targets</span><span class='rparen'>)</span>
+  <span class='id output_sources'>output_sources</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id target'>target</span><span class='rparen'>)</span>
+  <span class='id libtool'>libtool</span> <span class='op'>=</span> <span class='id libtool_needed_for'>libtool_needed_for</span> <span class='id targets'>targets</span><span class='period'>.</span><span class='id select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id tgt'>tgt</span><span class='op'>|</span>
+    <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='kw'>and</span> <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id include?'>include?</span> <span class='id tgt'>tgt</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>name</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
   <span class='rbrace'>}</span>
   <span class='id rule'>rule</span> <span class='op'>=</span> <span class='id libtool'>libtool</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ltlink</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>link</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>build </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='rbrace'>}</span><span class='tstring_content'>: </span><span class='embexpr_beg'>#{</span><span class='id rule'>rule</span><span class='rbrace'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id sources_to_objects'>sources_to_objects</span><span class='lparen'>(</span><span class='id sources'>sources</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>build </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>name</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>: </span><span class='embexpr_beg'>#{</span><span class='id rule'>rule</span><span class='rbrace'>}</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id sources_to_objects'>sources_to_objects</span><span class='lparen'>(</span><span class='id sources'>sources</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
   <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  ldflags = </span><span class='embexpr_beg'>#{</span><span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  ldflags = </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -735,7 +748,7 @@ all targets for the build
       <div class="method_details ">
   <p class="signature " id="handle_libtool_library-class_method">
   
-    + (<tt>Object</tt>) <strong>handle_libtool_library</strong>(out, target, sources, conf, targets) 
+    + (<tt>Object</tt>) <strong>handle_libtool_library</strong>(out, target, sources, targets) 
   
 
   
@@ -774,7 +787,7 @@ the output stream where output is written.
   
     <li>
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
         <span class='name'>target</span>
@@ -783,7 +796,7 @@ the output stream where output is written.
       
         &mdash;
         <div class='inline'><p>
-the filename of the target.
+the entire build spec hash for this target.
 </p>
 </div>
       
@@ -801,23 +814,6 @@ the filename of the target.
         &mdash;
         <div class='inline'><p>
 a list of sourcefile names to output rules
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-        <span class='name'>conf</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the entire build spec hash for this target.
 </p>
 </div>
       
@@ -848,27 +844,27 @@ all targets for the build
       <pre class="lines">
 
 
-180
-181
-182
-183
-184
-185
-186
-187
-188</pre>
+198
+199
+200
+201
+202
+203
+204
+205
+206</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 180</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 198</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id handle_libtool_library'>handle_libtool_library</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id target'>target</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id conf'>conf</span><span class='comma'>,</span> <span class='id targets'>targets</span><span class='rparen'>)</span>
-  <span class='id output_sources'>output_sources</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id conf'>conf</span><span class='rparen'>)</span>
-  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>build </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='rbrace'>}</span><span class='tstring_content'>: ltlink </span><span class='embexpr_beg'>#{</span><span class='id sources_to_ltobjects'>sources_to_ltobjects</span><span class='lparen'>(</span><span class='id sources'>sources</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id handle_libtool_library'>handle_libtool_library</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id target'>target</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id targets'>targets</span><span class='rparen'>)</span>
+  <span class='id output_sources'>output_sources</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id target'>target</span><span class='rparen'>)</span>
+  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>build </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>name</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>: ltlink </span><span class='embexpr_beg'>#{</span><span class='id sources_to_ltobjects'>sources_to_ltobjects</span><span class='lparen'>(</span><span class='id sources'>sources</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
   <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>${ldflags}</span><span class='tstring_end'>'</span></span>
-  <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> -rpath /usr/local/lib</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  ldflags = </span><span class='embexpr_beg'>#{</span><span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>||=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>${ldflags}</span><span class='tstring_end'>'</span></span>
+  <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>+=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> -rpath /usr/local/lib</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>  ldflags = </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ldflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -878,7 +874,7 @@ all targets for the build
       <div class="method_details ">
   <p class="signature " id="handle_static_library-class_method">
   
-    + (<tt>Object</tt>) <strong>handle_static_library</strong>(out, target, sources, conf, targets) 
+    + (<tt>Object</tt>) <strong>handle_static_library</strong>(out, target, sources, targets) 
   
 
   
@@ -917,7 +913,7 @@ the output stream where output is written.
   
     <li>
       
-        <span class='type'>(<tt>String</tt>)</span>
+        <span class='type'>(<tt>Hash</tt>)</span>
       
       
         <span class='name'>target</span>
@@ -926,7 +922,7 @@ the output stream where output is written.
       
         &mdash;
         <div class='inline'><p>
-the filename of the target.
+the entire build spec hash for this target.
 </p>
 </div>
       
@@ -944,23 +940,6 @@ the filename of the target.
         &mdash;
         <div class='inline'><p>
 a list of sourcefile names to output rules
-</p>
-</div>
-      
-    </li>
-  
-    <li>
-      
-        <span class='type'>(<tt>Hash</tt>)</span>
-      
-      
-        <span class='name'>conf</span>
-      
-      
-      
-        &mdash;
-        <div class='inline'><p>
-the entire build spec hash for this target.
 </p>
 </div>
       
@@ -991,20 +970,20 @@ all targets for the build
       <pre class="lines">
 
 
-145
-146
-147
-148
-149
-150</pre>
+165
+166
+167
+168
+169
+170</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 145</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 165</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id handle_static_library'>handle_static_library</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id target'>target</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id conf'>conf</span><span class='comma'>,</span> <span class='id targets'>targets</span><span class='rparen'>)</span>
-  <span class='id output_sources'>output_sources</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id conf'>conf</span><span class='rparen'>)</span>
-  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>build </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='rbrace'>}</span><span class='tstring_content'>: archive </span><span class='embexpr_beg'>#{</span><span class='id sources_to_objects'>sources_to_objects</span><span class='lparen'>(</span><span class='id sources'>sources</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id handle_static_library'>handle_static_library</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id target'>target</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id targets'>targets</span><span class='rparen'>)</span>
+  <span class='id output_sources'>output_sources</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id target'>target</span><span class='rparen'>)</span>
+  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>build </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>name</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_content'>: archive </span><span class='embexpr_beg'>#{</span><span class='id sources_to_objects'>sources_to_objects</span><span class='lparen'>(</span><span class='id sources'>sources</span><span class='rparen'>)</span><span class='period'>.</span><span class='id join'>join</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span>
+  <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'> </span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span> <span class='kw'>if</span> <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>dependencies</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
   <span class='id out'>out</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1056,19 +1035,19 @@ upwards.
       <pre class="lines">
 
 
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28</pre>
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 19</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id jitsufile'>jitsufile</span>
   <span class='id dir'>dir</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>.</span><span class='tstring_end'>'</span></span>
@@ -1149,15 +1128,15 @@ true if libtool required, nil otherwise.
       <pre class="lines">
 
 
-42
-43
-44</pre>
+64
+65
+66</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 42</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 64</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id libtool_needed_for'>libtool_needed_for</span><span class='lparen'>(</span><span class='id targets'>targets</span><span class='rparen'>)</span>
-  <span class='kw'>not</span> <span class='id targets'>targets</span><span class='period'>.</span><span class='id select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id key'>key</span><span class='comma'>,</span><span class='id val'>val</span><span class='op'>|</span> <span class='id val'>val</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>type</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>libtool_library</span><span class='tstring_end'>'</span></span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id empty?'>empty?</span>
+  <span class='kw'>not</span> <span class='id targets'>targets</span><span class='period'>.</span><span class='id select'>select</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id target'>target</span><span class='op'>|</span> <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>type</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>libtool_library</span><span class='tstring_end'>'</span></span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id empty?'>empty?</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1207,13 +1186,13 @@ path to `ninja` or nil if ninja was not found.
       <pre class="lines">
 
 
-10
-11
-12
-13</pre>
+25
+26
+27
+28</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 10</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 25</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id ninja'>ninja</span>
   <span class='id candidates'>candidates</span> <span class='op'>=</span> <span class='const'>ENV</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>PATH</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id split'>split</span><span class='lparen'>(</span><span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>:</span><span class='regexp_end'>/</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id d'>d</span><span class='op'>|</span> <span class='const'>File</span><span class='period'>.</span><span class='id join'>join</span> <span class='id d'>d</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>ninja</span><span class='tstring_end'>'</span></span> <span class='rbrace'>}</span>
@@ -1288,28 +1267,6 @@ nil
       <pre class="lines">
 
 
-50
-51
-52
-53
-54
-55
-56
-57
-58
-59
-60
-61
-62
-63
-64
-65
-66
-67
-68
-69
-70
-71
 72
 73
 74
@@ -1336,10 +1293,32 @@ nil
 95
 96
 97
-98</pre>
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 50</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 72</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id output'>output</span><span class='lparen'>(</span><span class='id data'>data</span><span class='rparen'>)</span>
   <span class='const'>File</span><span class='period'>.</span><span class='id open'>open</span> <span class='const'>NINJA_FILE_NAME</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>w</span><span class='tstring_end'>'</span></span> <span class='kw'>do</span> <span class='op'>|</span><span class='id f'>f</span><span class='op'>|</span>
@@ -1382,12 +1361,12 @@ description = LD ${out}
 command = ${libtool} --quiet --mode=link ${ld} ${ldflags} -o ${out} ${in}
 </span><span class='heredoc_end'>EOS
 </span>    <span class='kw'>end</span>
-    <span class='id data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>targets</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id target'>target</span><span class='comma'>,</span><span class='id conf'>conf</span><span class='op'>|</span>
+    <span class='id data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>targets</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id target'>target</span><span class='op'>|</span>
       <span class='id f'>f</span><span class='period'>.</span><span class='id write'>write</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span>
-      <span class='id sources'>sources</span> <span class='op'>=</span> <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>sources</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
-      <span class='const'>Jitsu</span><span class='period'>.</span><span class='id send'>send</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>handle_</span><span class='embexpr_beg'>#{</span><span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>type</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id to_sym'>to_sym</span><span class='comma'>,</span> <span class='id f'>f</span><span class='comma'>,</span> <span class='id target'>target</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id conf'>conf</span><span class='comma'>,</span> <span class='id data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>targets</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+      <span class='id sources'>sources</span> <span class='op'>=</span> <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>sources</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+      <span class='const'>Jitsu</span><span class='period'>.</span><span class='id send'>send</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>handle_</span><span class='embexpr_beg'>#{</span><span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>type</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='rbrace'>}</span><span class='tstring_end'>&quot;</span></span><span class='period'>.</span><span class='id to_sym'>to_sym</span><span class='comma'>,</span> <span class='id f'>f</span><span class='comma'>,</span> <span class='id target'>target</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>targets</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
     <span class='kw'>end</span>
-    <span class='id f'>f</span><span class='period'>.</span><span class='id write'>write</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\nbuild all: phony || </span><span class='embexpr_beg'>#{</span><span class='id data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>targets</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id keys'>keys</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
+    <span class='id f'>f</span><span class='period'>.</span><span class='id write'>write</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>\nbuild all: phony || </span><span class='embexpr_beg'>#{</span><span class='id data'>data</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>targets</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id t'>t</span><span class='op'>|</span> <span class='id t'>t</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>name</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='rbrace'>}</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'> </span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rbrace'>}</span><span class='tstring_content'>\n</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -1398,7 +1377,7 @@ command = ${libtool} --quiet --mode=link ${ld} ${ldflags} -o ${out} ${in}
       <div class="method_details ">
   <p class="signature " id="output_sources-class_method">
   
-    + (<tt>Object</tt>) <strong>output_sources</strong>(out, sources, conf) 
+    + (<tt>Object</tt>) <strong>output_sources</strong>(out, sources, target) 
   
 
   
@@ -1457,7 +1436,7 @@ a list of sourcefile names to output rules
         <span class='type'>(<tt>Hash</tt>)</span>
       
       
-        <span class='name'>conf</span>
+        <span class='name'>target</span>
       
       
       
@@ -1477,23 +1456,23 @@ the entire build spec hash for this target.
       <pre class="lines">
 
 
-106
-107
-108
-109
-110
-111
-112
-113
-114
-115</pre>
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 106</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 128</span>
 
-<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id output_sources'>output_sources</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id conf'>conf</span><span class='rparen'>)</span>
-  <span class='id cxxflags'>cxxflags</span> <span class='op'>=</span> <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>cxxflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
-  <span class='id libtool'>libtool</span> <span class='op'>=</span> <span class='id conf'>conf</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>type</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>libtool_library</span><span class='tstring_end'>'</span></span>
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id output_sources'>output_sources</span><span class='lparen'>(</span><span class='id out'>out</span><span class='comma'>,</span> <span class='id sources'>sources</span><span class='comma'>,</span> <span class='id target'>target</span><span class='rparen'>)</span>
+  <span class='id cxxflags'>cxxflags</span> <span class='op'>=</span> <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>cxxflags</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span>
+  <span class='id libtool'>libtool</span> <span class='op'>=</span> <span class='id target'>target</span><span class='lbracket'>[</span><span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>type</span><span class='tstring_end'>'</span></span><span class='rbracket'>]</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>libtool_library</span><span class='tstring_end'>'</span></span>
   <span class='id rule'>rule</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id libtool'>libtool</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>ltcxx</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>cxx</span><span class='tstring_end'>&quot;</span></span><span class='rparen'>)</span>
   <span class='id sources'>sources</span><span class='period'>.</span><span class='id each'>each</span> <span class='kw'>do</span> <span class='op'>|</span><span class='id src'>src</span><span class='op'>|</span>
     <span class='id object'>object</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id libtool'>libtool</span> <span class='op'>?</span> <span class='id source_to_ltobject'>source_to_ltobject</span><span class='lparen'>(</span><span class='id src'>src</span><span class='rparen'>)</span> <span class='op'>:</span> <span class='id source_to_object'>source_to_object</span><span class='lparen'>(</span><span class='id src'>src</span><span class='rparen'>)</span><span class='rparen'>)</span>
@@ -1570,15 +1549,29 @@ a hash of the build specification.
       <pre class="lines">
 
 
-34
-35
-36</pre>
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 34</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 49</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id read'>read</span><span class='lparen'>(</span><span class='id jitsufile'>jitsufile</span><span class='rparen'>)</span>
-  <span class='const'>YAML</span><span class='period'>.</span><span class='id load'>load</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id open'>open</span><span class='lparen'>(</span><span class='id jitsufile'>jitsufile</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>r</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='period'>.</span><span class='id read'>read</span><span class='rparen'>)</span>
+  <span class='id schema'>schema</span> <span class='op'>=</span> <span class='const'>YAML</span><span class='period'>.</span><span class='id load_file'>load_file</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id join'>join</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id dirname'>dirname</span><span class='lparen'>(</span><span class='kw'>__FILE__</span><span class='rparen'>)</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>schema.yaml</span><span class='tstring_end'>'</span></span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='id validator'>validator</span> <span class='op'>=</span> <span class='const'>Kwalify</span><span class='op'>::</span><span class='const'>Validator</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id schema'>schema</span><span class='rparen'>)</span>
+  <span class='id parser'>parser</span> <span class='op'>=</span> <span class='const'>Kwalify</span><span class='op'>::</span><span class='const'>Yaml</span><span class='op'>::</span><span class='const'>Parser</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id validator'>validator</span><span class='rparen'>)</span>
+  <span class='id doc'>doc</span> <span class='op'>=</span> <span class='id parser'>parser</span><span class='period'>.</span><span class='id parse'>parse</span><span class='lparen'>(</span><span class='const'>File</span><span class='period'>.</span><span class='id read'>read</span><span class='lparen'>(</span><span class='id jitsufile'>jitsufile</span><span class='rparen'>)</span><span class='rparen'>)</span>
+  <span class='kw'>if</span> <span class='id parser'>parser</span><span class='period'>.</span><span class='id errors'>errors</span> <span class='kw'>and</span> <span class='kw'>not</span> <span class='id parser'>parser</span><span class='period'>.</span><span class='id errors'>errors</span><span class='period'>.</span><span class='id empty?'>empty?</span>
+    <span class='id raise'>raise</span> <span class='const'>Jitsu</span><span class='op'>::</span><span class='const'>SyntaxError</span><span class='period'>.</span><span class='id new'>new</span><span class='lparen'>(</span><span class='id jitsufile'>jitsufile</span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>Syntax errors in Jitsufile</span><span class='tstring_end'>&quot;</span></span><span class='comma'>,</span> <span class='id parser'>parser</span><span class='period'>.</span><span class='id errors'>errors</span><span class='rparen'>)</span>
+  <span class='kw'>end</span>
+  <span class='id doc'>doc</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1649,12 +1642,12 @@ Convert sourcefile name to corresponding libtool object file name.
       <pre class="lines">
 
 
-210
-211
-212</pre>
+228
+229
+230</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 210</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 228</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id source_to_ltobject'>source_to_ltobject</span><span class='lparen'>(</span><span class='id src'>src</span><span class='rparen'>)</span>
   <span class='id src'>src</span><span class='period'>.</span><span class='id gsub'>gsub</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\.[Cc]\w+$</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>.lo</span><span class='tstring_end'>'</span></span>
@@ -1728,12 +1721,12 @@ Convert sourcefile name to corresponding object file name.
       <pre class="lines">
 
 
-194
-195
-196</pre>
+212
+213
+214</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 194</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 212</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id source_to_object'>source_to_object</span><span class='lparen'>(</span><span class='id src'>src</span><span class='rparen'>)</span>
   <span class='id src'>src</span><span class='period'>.</span><span class='id gsub'>gsub</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>\.[Cc]\w+$</span><span class='regexp_end'>/</span></span><span class='comma'>,</span> <span class='tstring'><span class='tstring_beg'>'</span><span class='tstring_content'>.o</span><span class='tstring_end'>'</span></span>
@@ -1808,12 +1801,12 @@ libtool object file paths.
       <pre class="lines">
 
 
-219
-220
-221</pre>
+237
+238
+239</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 219</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 237</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id sources_to_ltobjects'>sources_to_ltobjects</span><span class='lparen'>(</span><span class='id srcs'>srcs</span><span class='rparen'>)</span>
   <span class='id srcs'>srcs</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id src'>src</span><span class='op'>|</span> <span class='id source_to_ltobject'>source_to_ltobject</span> <span class='id src'>src</span> <span class='rbrace'>}</span>
@@ -1887,15 +1880,54 @@ object file paths.
       <pre class="lines">
 
 
-202
-203
-204</pre>
+220
+221
+222</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 202</span>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 220</span>
 
 <span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id sources_to_objects'>sources_to_objects</span><span class='lparen'>(</span><span class='id srcs'>srcs</span><span class='rparen'>)</span>
   <span class='id srcs'>srcs</span><span class='period'>.</span><span class='id map'>map</span> <span class='lbrace'>{</span> <span class='op'>|</span><span class='id src'>src</span><span class='op'>|</span> <span class='id source_to_object'>source_to_object</span> <span class='id src'>src</span> <span class='rbrace'>}</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="work-class_method">
+  
+    + (<tt>Object</tt>) <strong>work</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Process jitsufiles in current directory.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+18
+19
+20</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/jitsu.rb', line 18</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id work'>work</span>
+  <span class='const'>Jitsu</span><span class='period'>.</span><span class='id output'>output</span><span class='lparen'>(</span><span class='const'>Jitsu</span><span class='period'>.</span><span class='id read'>read</span><span class='lparen'>(</span><span class='const'>Jitsu</span><span class='period'>.</span><span class='id jitsufile'>jitsufile</span><span class='rparen'>)</span><span class='rparen'>)</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -1907,7 +1939,7 @@ object file paths.
 </div>
     
     <div id="footer">
-  Generated on Wed Feb 16 14:12:42 2011 by 
+  Generated on Tue Feb 22 12:24:44 2011 by 
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.6.4 (ruby-1.9.2).
 </div>
