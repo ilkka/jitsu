@@ -262,18 +262,19 @@ EOS
   # target name.
   def self.spec_to_targets(data)
     data['targets'].inject(Hash.new) do |h,tgt|
-      tgt['sources'].each { |src|
-        objname = source_to_objname(tgt, src)
-        obj = Target.new(:name => objname,
-                         :source => src,
-                         :cxxflags => tgt['cxxflags'])
-        if h.any? { |t| t.name == objname and t != obj }
-          # need to build duplicates of this object so munge the name
-          objname = File.join(File.dirname(objname), File.basename(tgt) + "_" + File.basename(objname))
-          obj.name = objname
-        end
-      } if tgt['sources']
       target = Target.new(tgt)
+      target.objects = tgt['sources'].map { |src|
+        Target.new(:name => source_to_objname(tgt, src),
+                   :source => src,
+                   :cxxflags => tgt['cxxflags'])
+      } if tgt['sources']
+      target.objects.each do |obj|
+        if h.any? { |t| t.name == obj.name and t != obj }
+          # need to build duplicates of this object so munge the name
+          obj.name = File.join(File.dirname(obj.name), File.basename(tgt) + "_" + File.basename(obj.name))
+        end
+        h[obj.name] = obj
+      end
       h[target.name] = target
       h
     end
