@@ -73,6 +73,7 @@ module Jitsu
   # @param data [Hash] a build specification from e.g. Jitsu::read.
   # @return nil
   def self.output(data)
+    targets = spec_to_targets(data)
     File.open NINJA_FILE_NAME, 'w' do |f|
       libtool = libtool_needed_for data['targets']
       f.write <<-EOS
@@ -114,9 +115,7 @@ rule ltlink
 EOS
       end
       data['targets'].each do |target|
-        f.write "\n"
-        sources = target['sources']
-        Jitsu.send "handle_#{target['type']}".to_sym, f, target, sources, data['targets']
+        f.write "#{target}"
       end
       f.write("\nbuild all: phony || #{data['targets'].map { |t| t['name'] }.join(' ')}\n")
     end
@@ -239,5 +238,44 @@ EOS
   # @return [Enumerable] libtool object file paths.
   def self.sources_to_ltobjects(srcs)
     srcs.map { |src| source_to_ltobject src }
+  end
+
+  # Convert source name to correct form of object name for given target,
+  # that is either regular object or libtool object.
+  #
+  # @param tgt [Hash] target config hash.
+  # @param src [String] source file name.
+  def self.source_to_objname(tgt, src)
+    case tgt['type']
+    when /^libtool/
+      source_to_ltobject src
+    else
+      source_to_object src
+    end
+  end
+
+  # Convert build spec into Jitsu::Target instances. Any sources of linkable
+  # targets are converted to object -type targets.
+  #
+  # @param data [Hash] build spec.
+  # @return [Hash] a Hash of Jitsu::Target instances keyed on the
+  # target name.
+  def self.spec_to_targets(data)
+    data['targets'].inject(Hash.new) do |h,tgt|
+      tgt['sources'].each { |src|
+        objname = source_to_objname(tgt, src)
+        obj = Target.new(:name => objname,
+                         :source => src,
+                         :cxxflags => tgt['cxxflags'])
+        if h.any? { |t| t.name == objname and t != obj }
+          # need to build duplicates of this object so munge the name
+          objname = File.join(File.dirname(objname), File.basename(tgt) + "_" + File.basename(objname))
+          obj.name = objname
+        end
+      } if tgt['sources']
+      target = Target.new(tgt)
+      h[target.name] = target
+      h
+    end
   end
 end
