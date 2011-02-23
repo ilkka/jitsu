@@ -100,7 +100,7 @@ rule archive
   description = AR ${out}
   command = ${ar} rT ${out} ${in}
 EOS
-      if libtool_needed_for data['targets']
+      if libtool
         f.write <<-EOS
 
 rule ltcxx
