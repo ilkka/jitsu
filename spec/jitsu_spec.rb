@@ -97,6 +97,26 @@ EOS
     end
   end
 
+  it "correctly converts build specs into Targets" do
+    spec = YAML.load <<-EOS
+---
+targets:
+  - name: aaa1
+    type: executable
+    sources:
+      - aaa1a.cpp
+      - aaa1b.cpp
+EOS
+    targets = Jitsu.spec_to_targets(spec)
+    targets.should include 'aaa1'
+    targets.should include 'aaa1a.o'
+    targets.should include 'aaa1b.o'
+    targets['aaa1'].objects.map {|o| o.name}.should include 'aaa1a.o'
+    targets['aaa1'].objects.map {|o| o.name}.should include 'aaa1b.o'
+    targets['aaa1a.o'].source.should == 'aaa1a.cpp'
+    targets['aaa1b.o'].source.should == 'aaa1b.cpp'
+  end
+
   it "outputs a build.jitsu file" do
     Dir.mktmpdir do |dir|
       Dir.chdir dir do |dir|
