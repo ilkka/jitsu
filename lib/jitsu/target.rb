@@ -18,6 +18,9 @@ module Jitsu
   # Class representing a build system target.
   # 
   class Target
+
+    attr_accessor :inputs, :outputs
+
   end
 
 end
