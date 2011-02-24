@@ -21,6 +21,30 @@ module Jitsu
 
     attr_accessor :inputs, :outputs
 
+    # Create a new Target instance. Arbitrary configuration can be passed as
+    # :key => value pairs.
+    #
+    # @param args [Hash] configuration data.
+    def initialize(args = {})
+      @params = args
+    end
+
+    # Access configuration variable by name.
+    #
+    # @param key [Sym] the key for the configuration variable.
+    # @return [] corresponding value.
+    def [] (key)
+      @params[key]
+    end
+
+    # Store configuration variable by name.
+    #
+    # @param key [Sym] the key for the configuration variable.
+    # @param value [] the new value to store.
+    def []= (key, value)
+      @params[key] = value
+    end
+
   end
 
 end
