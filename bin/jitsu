@@ -32,7 +32,9 @@ opts = Trollop::options do
   version <<-EOS
 jitsu #{File.read File.join(File.dirname(__FILE__), '..', 'VERSION')}
 Copyright (C) 2011 Ilkka Laukkanen <ilkka.s.laukkanen@gmail.com>
-Licensed under the MIT License
+This program comes with ABSOLUTELY NO WARRANTY.
+This is free software, and you are welcome to redistribute it
+under certain conditions; see the file LICENSE.txt for details.
 EOS
   banner <<-EOS
 jitsu, the meta build system for ninja.
