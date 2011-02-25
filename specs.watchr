@@ -23,8 +23,8 @@ def success_icon_name
 end
 
 # Rules
-watch('^spec/.*_spec\.rb$') { |md| spec md[0] }
-watch('^lib/(.*)\.rb$') { |md| spec "spec/#{md[1]}_spec.rb" }
+watch('^spec/.+_spec\.rb$') { |md| spec md[0] }
+watch('^lib/.+\.rb$') { |md| spec "spec/#{File.basename(md[0]).gsub(/\..*?$/, '')}_spec.rb" }
 
 # Notify using notify-send.
 #
