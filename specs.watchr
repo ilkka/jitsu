@@ -81,3 +81,9 @@ end
 def rspec_opts
   "--format documentation --color"
 end
+
+# Run all specs on Ctrl-\
+Signal.trap('QUIT') { run "rake spec" }
+# Quit on Ctrl-C
+Signal.trap('INT') { abort("\n") }
+
