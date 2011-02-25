@@ -75,6 +75,9 @@ def spec(specfile)
   result = run(%Q(rspec #{rspec_opts} #{specfile}))
 end
 
+# Options for rspec run
+#
+# @return [String] string with options.
 def rspec_opts
   "--format documentation --color"
 end
