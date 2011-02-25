@@ -25,6 +25,7 @@ end
 # Rules
 watch('^spec/.+_spec\.rb$') { |md| spec md[0] }
 watch('^lib/.+\.rb$') { |md| spec "spec/#{File.basename(md[0]).gsub(/\..*?$/, '')}_spec.rb" }
+watch('^features/.+\.feature$') { |md| feature md[0] }
 
 # Notify using notify-send.
 #
@@ -41,7 +42,7 @@ end
 #
 def notify_success
   if have_notify_send?
-    notify success_icon_name, "All specs green!", "Now write more specs!"
+    notify success_icon_name, "All green!", "Now write more tests :)"
   end
 end
 
@@ -49,15 +50,15 @@ end
 #
 def notify_failure
   if have_notify_send?
-    notify error_icon_name, "Some specs red :(", "Now go fix 'em"
+    notify error_icon_name, "Something is broken", "Now go fix it :)"
   end
 end
 
 # Run a single ruby command. Notify appropriately.
 # 
 # @param cmd [String] command to run.
-# @return [String] output from the command
 def run(cmd)
+  system('clear')
   puts "Running #{cmd}"
   if system(cmd)
     notify_success
@@ -69,10 +70,15 @@ end
 # Run a single spec.
 #
 # @param specfile [String] path to specfile.
-# @return nil.
 def spec(specfile)
-  system('clear')
-  result = run(%Q(rspec #{rspec_opts} #{specfile}))
+  run(%Q(rspec #{rspec_opts} #{specfile}))
+end
+
+# Run a single feature.
+#
+# @param featurefile [String] path to feature file.
+def feature(featurefile)
+  run(%Q(cucumber #{cucumber_opts} #{featurefile}))
 end
 
 # Options for rspec run
@@ -82,8 +88,45 @@ def rspec_opts
   "--format documentation --color"
 end
 
+# Options for cucumber run.
+#
+# @return [String] string with options.
+def cucumber_opts
+  ""
+end
+
+# Run all specs.
+#
+def run_all_specs
+  run "rake spec"
+end
+
+# Run all features.
+#
+def run_features
+  run "rake features"
+end
+
+# Run specs and features.
+#
+def run_suite
+  run "rake spec features"
+end
+
 # Run all specs on Ctrl-\
-Signal.trap('QUIT') { run "rake spec" }
-# Quit on Ctrl-C
-Signal.trap('INT') { abort("\n") }
+Signal.trap('QUIT') { run_all_specs }
+
+# Run full suite on one Ctrl-C, quit on two
+@interrupted = false
+Signal.trap('INT') do
+  if @interrupted
+    abort("\n")
+  else
+    puts "Interrupt a second time to quit"
+    @interrupted = true
+    Kernel.sleep 1.5
+    run_suite
+    @interrupted = false
+  end
+end
 
